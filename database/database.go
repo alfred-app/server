@@ -11,13 +11,13 @@ import (
 
 type Client struct {
 	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	Email       string    `gorm:"type:unique;not null"`
+	Email       string    `gorm:"unique;not null"`
 	Password    string
 	Name        string
 	Address     string
 	PhoneNumber string
 	ImageURL    string
-	Jobs        []Jobs `gorm:"foreignKey:ClientID" json:"-"`
+	Jobs        []Jobs `gorm:"foreignKey:ClientID"`
 }
 
 type Talent struct {
@@ -55,7 +55,7 @@ type JobsOnAuction struct {
 }
 
 func InitDB() *gorm.DB {
-	envFile, _ := godotenv.Read(".env")
+	envFile, _ := godotenv.Read()
 
 	dsn, isExist := envFile["DATABASE_URL"]
 	if isExist != true {

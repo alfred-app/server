@@ -3,9 +3,9 @@ POST http://localhost:8080/client/register
 Content-Type: application/json
 
 {
-    "email": "client1@example.com",
-    "name": "client1",
-    "password":"client1",
+    "email": "client2@example.com",
+    "name": "client2",
+    "password":"client2",
     "phone_number":"123",
     "address":"local",
     "image_url":"images"
@@ -17,5 +17,8 @@ Content-Type: application/json
 
 {
     "email": "client1@example.com",
-    "password": "client1",
+    "password": "client1"
 }
+
+### BASE TEST
+GET http://localhost:8080

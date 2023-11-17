@@ -13,7 +13,7 @@ import (
 )
 
 func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
-	envFile, _ := godotenv.Read(".env")
+	envFile, _ := godotenv.Read()
 	var client database.Client
 	db := database.InitDB()
 	saltStr, isExist := envFile["HASH_SALT"]
@@ -43,7 +43,7 @@ func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
 }
 
 func LoginClient(data *LoginBody) (LoginResponse, error) {
-	envFile, _ := godotenv.Read(".env")
+	envFile, _ := godotenv.Read()
 	var client database.Client
 	db := database.InitDB()
 	jwtKey, isExist := envFile["JWT_KEY"]
