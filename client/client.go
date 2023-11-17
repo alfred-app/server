@@ -4,7 +4,6 @@ import (
 	"alfred/database"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 
@@ -13,17 +12,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading environment variables")
-	}
-}
-
 func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
+	envFile, _ := godotenv.Read(".env")
 	var client database.Client
 	db := database.InitDB()
-	saltStr, isExist := os.LookupEnv("HASH_SALT")
+	saltStr, isExist := envFile["HASH_SALT"]
 	if !isExist {
 		log.Fatal("Environment variable HASH_SALT is not set")
 	}
@@ -50,9 +43,10 @@ func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
 }
 
 func LoginClient(data *LoginBody) (LoginResponse, error) {
+	envFile, _ := godotenv.Read(".env")
 	var client database.Client
 	db := database.InitDB()
-	jwtKey, isExist := os.LookupEnv("JWT_KEY")
+	jwtKey, isExist := envFile["JWT_KEY"]
 	jwtByte := []byte(jwtKey)
 	if !isExist {
 		log.Fatal("JWT_KEY not found")
