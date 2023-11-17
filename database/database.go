@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -57,13 +56,8 @@ type JobsOnAuction struct {
 }
 
 func InitDB() *gorm.DB {
-	envFile, _ := godotenv.Read()
-	fmt.Println(os.Environ())
-	dsn, isExist := envFile["DATABASE_URL"]
-	if isExist != true {
-		panic("Variable not found")
-	}
-
+	dsn := os.Getenv("DATABASE_URL")
+	fmt.Println(dsn)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect database")

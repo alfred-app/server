@@ -4,22 +4,18 @@ import (
 	"alfred/database"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
-	envFile, _ := godotenv.Read()
 	var client database.Client
 	db := database.InitDB()
-	saltStr, isExist := envFile["HASH_SALT"]
-	if !isExist {
-		log.Fatal("Environment variable HASH_SALT is not set")
-	}
+	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
 		log.Fatal("Error converting salt string")
@@ -43,14 +39,10 @@ func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
 }
 
 func LoginClient(data *LoginBody) (LoginResponse, error) {
-	envFile, _ := godotenv.Read()
 	var client database.Client
 	db := database.InitDB()
-	jwtKey, isExist := envFile["JWT_KEY"]
+	jwtKey := os.Getenv("JWT_KEY")
 	jwtByte := []byte(jwtKey)
-	if !isExist {
-		log.Fatal("JWT_KEY not found")
-	}
 
 	err := db.First(&client, "email=?", data.Email).Error
 	if err != nil {
