@@ -1,7 +1,6 @@
 package database
 
 import (
-	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -56,12 +55,9 @@ type JobsOnAuction struct {
 }
 
 func InitDB() *gorm.DB {
-	err := godotenv.Load()
-	if err != nil {
-		panic("Error loading environment variables")
-	}
+	envFile, _ := godotenv.Read(".env")
 
-	dsn, isExist := os.LookupEnv("DATABASE_URL")
+	dsn, isExist := envFile["DATABASE_URL"]
 	if isExist != true {
 		panic("Variable not found")
 	}
