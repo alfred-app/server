@@ -12,13 +12,13 @@ import (
 
 type Client struct {
 	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	Email       string    `gorm:"type:string;not null"`
+	Email       string    `gorm:"type:unique;not null"`
 	Password    string
 	Name        string
 	Address     string
 	PhoneNumber string
 	ImageURL    string
-	Jobs        []Jobs `gorm:"foreignKey:ClientID"`
+	Jobs        []Jobs `gorm:"foreignKey:ClientID" json:"-"`
 }
 
 type Talent struct {
@@ -61,8 +61,8 @@ func InitDB() *gorm.DB {
 		panic("Error loading environment variables")
 	}
 
-	dsn, bool := os.LookupEnv("DATABASE_URL")
-	if bool != true {
+	dsn, isExist := os.LookupEnv("DATABASE_URL")
+	if isExist != true {
 		panic("Variable not found")
 	}
 

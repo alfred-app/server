@@ -1,0 +1,21 @@
+### REGISTER
+POST http://localhost:8080/client/register
+Content-Type: application/json
+
+{
+    "email": "client1@example.com",
+    "name": "client1",
+    "password":"client1",
+    "phone_number":"123",
+    "address":"local",
+    "image_url":"images"
+}
+
+### LOGIN
+POST http://localhost:8080/client/login
+Content-Type: application/json
+
+{
+    "email": "client1@example.com",
+    "password": "client1",
+}
