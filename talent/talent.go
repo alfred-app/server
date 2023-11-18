@@ -32,6 +32,9 @@ func RegisterTalent(data *RegisterBody) (RegisterResponse, error) {
 		log.Fatal("Error converting salt string")
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), salt)
+	if err != nil {
+		log.Fatal("error hashing password")
+	}
 	data.Password = string(hashedPassword)
 	talent = database.Talent{
 		Email:       data.Email,
