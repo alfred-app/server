@@ -17,19 +17,6 @@ func RegisterHandler(c *gin.Context) {
 	c.JSON(response.Code, response.Response)
 }
 
-// func LoginHandler(c *gin.Context) {
-// 	var requestBody LoginBody
-// 	if err := c.ShouldBindJSON(&requestBody); err != nil {
-// 		c.JSON(400, gin.H{"message": err.Error()})
-// 		return
-// 	}
-// 	response, err := LoginTalent(&requestBody)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	c.JSON(response.Code, response.Response)
-// }
-
 func LoginHandler(c *gin.Context) {
 	var requestBody LoginBody
 
