@@ -50,7 +50,7 @@ func RegisterTalent(data *RegisterBody) (RegisterResponse, error) {
 	return RegisterResponse{Code: http.StatusCreated, Response: talent}, err
 }
 
-func LoginClient(data *LoginBody) (LoginResponse, error) {
+func LoginTalent(data *LoginBody) (LoginResponse, error) {
 	var talent database.Talent
 	db := database.InitDB()
 	jwtKey, isExist := os.LookupEnv("JWT_KEY")
