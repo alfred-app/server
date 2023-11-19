@@ -31,3 +31,9 @@ func LoginHandler(c *gin.Context) {
 	}
 	c.JSON(response.Code, response.Response)
 }
+
+func GetClientData(c *gin.Context) {
+	clientID := c.Param("id")
+	response := GetClientByID(clientID)
+	c.JSON(response.Code, response.Response)
+}
