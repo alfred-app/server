@@ -2,7 +2,6 @@ package talent
 
 import (
 	"alfred/database"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -12,17 +11,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func RegisterTalent(data *RegisterBody) (RegisterResponse, error) {
+func RegisterTalent(data *RegisterBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
-		log.Fatal("Error converting salt string")
+		return Response{Code: http.StatusInternalServerError, Response: "Error converting salt"}
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), salt)
 	if err != nil {
-		log.Fatal("error hashing password")
+		return Response{Code: http.StatusInternalServerError, Response: "Error generating hash password"}
 	}
 	data.Password = string(hashedPassword)
 	talent = database.Talent{
@@ -37,12 +36,12 @@ func RegisterTalent(data *RegisterBody) (RegisterResponse, error) {
 	err = db.Create(&talent).Error
 	talent.Password = ""
 	if err != nil {
-		return RegisterResponse{Code: 500, Response: "Error creating user"}, err
+		return Response{Code: http.StatusInternalServerError, Response: "Error creating user"}
 	}
-	return RegisterResponse{Code: http.StatusCreated, Response: talent}, err
+	return Response{Code: http.StatusCreated, Response: talent}
 }
 
-func LoginTalent(data *LoginBody) (LoginResponse, error) {
+func LoginTalent(data *LoginBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
 	jwtKey := os.Getenv("JWT_KEY")
@@ -50,11 +49,11 @@ func LoginTalent(data *LoginBody) (LoginResponse, error) {
 
 	err := db.First(&talent, "email=?", data.Email).Error
 	if err != nil {
-		log.Fatal("Talent not found")
+		return Response{Code: http.StatusNotFound, Response: "Talent not found"}
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(talent.Password), []byte(data.Password))
 	if err != nil {
-		log.Fatal("Password mismatch")
+		return Response{Code: http.StatusUnauthorized, Response: "Password mismatch"}
 	}
 	expirationsTime := time.Now().Add(24 * time.Hour)
 	payload := &Payload{
@@ -67,10 +66,13 @@ func LoginTalent(data *LoginBody) (LoginResponse, error) {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	tokenString, err := token.SignedString(jwtByte)
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error signing token"}
+	}
 	response := PayloadResponse{
 		ID:    talent.ID.String(),
 		Token: tokenString,
 		Role:  "talent",
 	}
-	return LoginResponse{Code: http.StatusOK, Response: response}, err
+	return Response{Code: http.StatusOK, Response: response}
 }

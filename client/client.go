@@ -2,7 +2,6 @@ package client
 
 import (
 	"alfred/database"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -12,13 +11,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
+func RegisterClient(data *RegisterBody) Response {
 	var client database.Client
 	db := database.InitDB()
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
-		log.Fatal("Error converting salt string")
+		return Response{Code: http.StatusInternalServerError, Response: "Error converting salt"}
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), salt)
 	data.Password = string(hashedPassword)
@@ -33,12 +32,12 @@ func RegisterClient(data *RegisterBody) (RegisterResponse, error) {
 	err = db.Create(&client).Error
 	client.Password = ""
 	if err != nil {
-		return RegisterResponse{Code: 500, Response: "Error creating user"}, err
+		return Response{Code: http.StatusInternalServerError, Response: "Error creating user"}
 	}
-	return RegisterResponse{Code: http.StatusCreated, Response: client}, err
+	return Response{Code: http.StatusCreated, Response: client}
 }
 
-func LoginClient(data *LoginBody) (LoginResponse, error) {
+func LoginClient(data *LoginBody) Response {
 	var client database.Client
 	db := database.InitDB()
 	jwtKey := os.Getenv("JWT_KEY")
@@ -46,11 +45,11 @@ func LoginClient(data *LoginBody) (LoginResponse, error) {
 
 	err := db.First(&client, "email=?", data.Email).Error
 	if err != nil {
-		log.Fatal("Client not found")
+		return Response{Code: http.StatusNotFound, Response: "Client not Found"}
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(client.Password), []byte(data.Password))
 	if err != nil {
-		log.Fatal("Password mismatch")
+		return Response{Code: http.StatusUnauthorized, Response: "Password mismatch"}
 	}
 	expirationsTime := time.Now().Add(24 * time.Hour)
 	payload := &Payload{
@@ -63,27 +62,30 @@ func LoginClient(data *LoginBody) (LoginResponse, error) {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	tokenString, err := token.SignedString(jwtByte)
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error signing token"}
+	}
 	response := PayloadResponse{
 		ID:    client.ID.String(),
 		Token: tokenString,
 		Role:  "client",
 	}
-	return LoginResponse{Code: http.StatusOK, Response: response}, err
+	return Response{Code: http.StatusOK, Response: response}
 }
 
-func GetClientByID(clientID string) GetClientByIDResponse {
+func GetClientByID(clientID string) Response {
 	var client database.Client
 	db := database.InitDB()
 	err := db.First(&client, "ID=?", clientID).Error
 	if err != nil {
-		return GetClientByIDResponse{
-			Code:     404,
+		return Response{
+			Code:     http.StatusNotFound,
 			Response: "Client not found",
 		}
 	}
 	client.Password = ""
-	return GetClientByIDResponse{
-		Code:     200,
+	return Response{
+		Code:     http.StatusOK,
 		Response: client,
 	}
 }

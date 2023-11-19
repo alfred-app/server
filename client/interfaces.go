@@ -29,7 +29,7 @@ type Payload struct {
 	jwt.RegisteredClaims
 }
 
-type RegisterResponse struct {
+type Response struct {
 	Code     int         `json:"code"`
 	Response interface{} `json:"response"`
 }
@@ -38,14 +38,4 @@ type PayloadResponse struct {
 	ID    string `json:"id"`
 	Token string `json:"token"`
 	Role  string `json:"role"`
-}
-
-type LoginResponse struct {
-	Code     int         `json:"code"`
-	Response interface{} `json:"response"`
-}
-
-type GetClientByIDResponse struct {
-	Code     int         `json:"code"`
-	Response interface{} `json:"response"`
 }

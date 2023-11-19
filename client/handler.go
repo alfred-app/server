@@ -11,10 +11,7 @@ func RegisterHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"message": err.Error()})
 		return
 	}
-	response, err := RegisterClient(&requestBody)
-	if err != nil {
-		panic(err)
-	}
+	response := RegisterClient(&requestBody)
 	c.JSON(response.Code, response.Response)
 }
 
@@ -25,10 +22,7 @@ func LoginHandler(c *gin.Context) {
 		c.JSON(400, gin.H{"message": err.Error()})
 		return
 	}
-	response, err := LoginClient(&requestBody)
-	if err != nil {
-		panic(err)
-	}
+	response := LoginClient(&requestBody)
 	c.JSON(response.Code, response.Response)
 }
 
