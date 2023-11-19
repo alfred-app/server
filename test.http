@@ -20,5 +20,8 @@ Content-Type: application/json
     "password": "client1"
 }
 
+### GET CLIENT BY ID
+GET http://localhost:8080/client/98460ba2-14c0-46dc-8a10-631945c633f0
+
 ### BASE TEST
 GET http://localhost:8080

@@ -5,10 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      DATABASE_URL: "postgres://postgres:D3Cg241fG--F*EcddA1g*3b1BbE2Gc-F@monorail.proxy.rlwy.net:50003/railway"
-      JWT_KEY: "b501561895ce919484a3253d495bea8be8ce903cf7bc422e78a1671d175b667b"
-      HASH_SALT: "10"
     ports:
       - "8080:8080"
     networks:

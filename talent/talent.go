@@ -9,24 +9,13 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
-
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading environment variables")
-	}
-}
 
 func RegisterTalent(data *RegisterBody) (RegisterResponse, error) {
 	var talent database.Talent
 	db := database.InitDB()
-	saltStr, isExist := os.LookupEnv("HASH_SALT")
-	if !isExist {
-		log.Fatal("Environment variable HASH_SALT is not set")
-	}
+	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
 		log.Fatal("Error converting salt string")
@@ -56,11 +45,8 @@ func RegisterTalent(data *RegisterBody) (RegisterResponse, error) {
 func LoginTalent(data *LoginBody) (LoginResponse, error) {
 	var talent database.Talent
 	db := database.InitDB()
-	jwtKey, isExist := os.LookupEnv("JWT_KEY")
+	jwtKey := os.Getenv("JWT_KEY")
 	jwtByte := []byte(jwtKey)
-	if !isExist {
-		log.Fatal("JWT_KEY not found")
-	}
 
 	err := db.First(&talent, "email=?", data.Email).Error
 	if err != nil {
