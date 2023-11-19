@@ -1,6 +1,8 @@
 package client
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,7 +29,29 @@ func LoginHandler(c *gin.Context) {
 }
 
 func GetClientData(c *gin.Context) {
-	clientID := c.Param("id")
+	clientID := c.Param("clientID")
 	response := GetClientByID(clientID)
+	c.JSON(response.Code, response.Response)
+}
+
+func UpdateHandler(c *gin.Context) {
+	var requestBody EditClientBody
+	clientID := c.Param("clientID")
+
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	}
+	response := EditClientData(clientID, &requestBody)
+	c.JSON(response.Code, response.Response)
+}
+
+func ChangePasswordHandler(c *gin.Context) {
+	var requestBody ChangePasswordBody
+	clientID := c.Param("clientID")
+
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	}
+	response := ChangePassword(clientID, &requestBody)
 	c.JSON(response.Code, response.Response)
 }

@@ -90,4 +90,79 @@ func GetClientByID(clientID string) Response {
 	}
 }
 
-func EditClientData(clientID string) {}
+func GetValueOrDefault(value string, defaultValue string) string {
+	if value != "" {
+		return value
+	}
+	return defaultValue
+}
+
+func EditClientData(clientID string, data *EditClientBody) Response {
+	var client database.Client
+	db := database.InitDB()
+	err := db.First(&client, "ID=?", clientID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Client not found",
+		}
+	}
+	client.Email = GetValueOrDefault(data.Email, client.Email)
+	client.Name = GetValueOrDefault(data.Name, client.Name)
+	client.Address = GetValueOrDefault(data.Address, client.Address)
+	client.PhoneNumber = GetValueOrDefault(data.PhoneNumber, client.PhoneNumber)
+	client.ImageURL = GetValueOrDefault(data.ImageURL, client.ImageURL)
+	err = db.Save(&client).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotImplemented,
+			Response: "Failed to update data",
+		}
+	}
+	client.Password = ""
+	return Response{
+		Code:     http.StatusOK,
+		Response: client,
+	}
+}
+
+func ChangePassword(clientID string, data *ChangePasswordBody) Response {
+	var client database.Client
+	saltStr := os.Getenv("HASH_SALT")
+	salt, err := strconv.Atoi(saltStr)
+	if err != nil {
+		return Response{
+			Code:     http.StatusInternalServerError,
+			Response: "Error converting salt",
+		}
+	}
+	db := database.InitDB()
+	err = db.First(&client, "ID=?", clientID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Client does not exist",
+		}
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(client.Password), []byte(data.OldPassword))
+	if err != nil {
+		return Response{
+			Code:     http.StatusUnauthorized,
+			Response: "Password mismatch",
+		}
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.NewPassword), salt)
+	client.Password = string(hashedPassword)
+	err = db.Save(&client).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusInternalServerError,
+			Response: "Error update password",
+		}
+	}
+	client.Password = ""
+	return Response{
+		Code:     http.StatusAccepted,
+		Response: client,
+	}
+}

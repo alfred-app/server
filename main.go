@@ -19,7 +19,9 @@ func main() {
 
 	clientGroup.POST("/register", client.RegisterHandler)
 	clientGroup.POST("/login", client.LoginHandler)
-	clientGroup.GET("/:id", client.GetClientData)
+	clientGroup.GET("/:clientID", client.GetClientData)
+	clientGroup.PATCH("/:clientID", client.UpdateHandler)
+	clientGroup.PATCH("/change-password/:clientID", client.ChangePasswordHandler)
 
 	talentGroup.POST("/register", talent.RegisterHandler)
 	talentGroup.POST("/login", talent.LoginHandler)
