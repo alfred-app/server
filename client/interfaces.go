@@ -18,6 +18,10 @@ type LoginBody struct {
 	Password string `json:"password"`
 }
 
+type EditClientBody struct {
+	Email *string `json:"email"`
+}
+
 type Payload struct {
 	ID    string `json:"id"`
 	Email string `json:"email"`
@@ -37,6 +41,11 @@ type PayloadResponse struct {
 }
 
 type LoginResponse struct {
+	Code     int         `json:"code"`
+	Response interface{} `json:"response"`
+}
+
+type GetClientByIDResponse struct {
 	Code     int         `json:"code"`
 	Response interface{} `json:"response"`
 }

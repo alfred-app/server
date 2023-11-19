@@ -17,6 +17,7 @@ func main() {
 
 	clientGroup.POST("/register", client.RegisterHandler)
 	clientGroup.POST("/login", client.LoginHandler)
+	clientGroup.GET("/:id", client.GetClientData)
 
 	router.Run()
 }

@@ -70,3 +70,22 @@ func LoginClient(data *LoginBody) (LoginResponse, error) {
 	}
 	return LoginResponse{Code: http.StatusOK, Response: response}, err
 }
+
+func GetClientByID(clientID string) GetClientByIDResponse {
+	var client database.Client
+	db := database.InitDB()
+	err := db.First(&client, "ID=?", clientID).Error
+	if err != nil {
+		return GetClientByIDResponse{
+			Code:     404,
+			Response: "Client not found",
+		}
+	}
+	client.Password = ""
+	return GetClientByIDResponse{
+		Code:     200,
+		Response: client,
+	}
+}
+
+func EditClientData(clientID string) {}
