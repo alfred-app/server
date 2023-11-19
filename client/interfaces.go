@@ -19,7 +19,16 @@ type LoginBody struct {
 }
 
 type EditClientBody struct {
-	Email *string `json:"email"`
+	Email       string `json:"email"`
+	Name        string `json:"name"`
+	Address     string `json:"address"`
+	PhoneNumber string `json:"phone_number"`
+	ImageURL    string `json:"image_url"`
+}
+
+type ChangePasswordBody struct {
+	OldPassword string `json:"old_password"`
+	NewPassword string `json:"new_password"`
 }
 
 type Payload struct {
