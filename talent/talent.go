@@ -193,3 +193,26 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 		Response: talent,
 	}
 }
+
+func DeleteTalentData(talentID string) Response {
+	var talent database.Talent
+	db := database.InitDB()
+	err := db.First(&talent, "ID=?", talentID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Talent not found",
+		}
+	}
+	err = db.Delete(&talent).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotImplemented,
+			Response: "Failed to delete data",
+		}
+	}
+	return Response{
+		Code:     http.StatusOK,
+		Response: "Talent deleted",
+	}
+}

@@ -54,3 +54,9 @@ func ChangePasswordHandler(c *gin.Context) {
 	response := ChangePassword(talentID, &requestBody)
 	c.JSON(response.Code, response.Response)
 }
+
+func DeleteHandler(c *gin.Context) {
+	talentID := c.Param("talentID")
+	response := DeleteTalentData(talentID)
+	c.JSON(response.Code, response.Response)
+}
