@@ -76,3 +76,143 @@ func LoginTalent(data *LoginBody) Response {
 	}
 	return Response{Code: http.StatusOK, Response: response}
 }
+
+func GetValueOrDefault(value string, defaultValue string) string {
+	if value == "" {
+		return defaultValue
+	}
+	return value
+}
+
+func GetTalentByID(talentID string) Response {
+	var talent database.Talent
+	db := database.InitDB()
+	err := db.First(&talent, "ID=?", talentID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Talent not found",
+		}
+	}
+	talent.Password = ""
+	return Response{
+		Code:     http.StatusOK,
+		Response: talent,
+	}
+}
+
+func GetTalents() Response {
+	var talents []database.Talent
+	db := database.InitDB()
+	err := db.Find(&talents).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Talents not found",
+		}
+	}
+	return Response{
+		Code:     http.StatusOK,
+		Response: talents,
+	}
+}
+
+func EditTalentData(talentID string, data *EditTalentBody) Response {
+	var talent database.Talent
+	db := database.InitDB()
+	err := db.First(&talent, "ID=?", talentID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Talent not found",
+		}
+	}
+	talent.Email = GetValueOrDefault(data.Email, talent.Email)
+	talent.Name = GetValueOrDefault(data.Name, talent.Name)
+	talent.AboutMe = GetValueOrDefault(data.AboutMe, talent.AboutMe)
+	talent.ImageURL = GetValueOrDefault(data.ImageURL, talent.ImageURL)
+	talent.Address = GetValueOrDefault(data.Address, talent.Address)
+	talent.PhoneNumber = GetValueOrDefault(data.PhoneNumber, talent.PhoneNumber)
+	err = db.Save(&talent).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotImplemented,
+			Response: "Failed to update data",
+		}
+	}
+	talent.Password = ""
+	return Response{
+		Code:     http.StatusOK,
+		Response: talent,
+	}
+}
+
+func ChangePassword(talentID string, data *ChangePasswordBody) Response {
+	var talent database.Talent
+	saltStr := os.Getenv("HASH_SALT")
+	salt, err := strconv.Atoi(saltStr)
+	if err != nil {
+		return Response{
+			Code:     http.StatusInternalServerError,
+			Response: "Error converting salt",
+		}
+	}
+	db := database.InitDB()
+	err = db.First(&talent, "ID=?", talentID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Talent does not exist",
+		}
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(talent.Password), []byte(data.OldPassword))
+	if err != nil {
+		return Response{
+			Code:     http.StatusUnauthorized,
+			Response: "Password mismatch",
+		}
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.NewPassword), salt)
+	if err != nil {
+		return Response{
+			Code:     http.StatusInternalServerError,
+			Response: "Error generating hash password",
+		}
+	}
+	talent.Password = string(hashedPassword)
+	err = db.Save(&talent).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotImplemented,
+			Response: "Failed to update password",
+		}
+	}
+	talent.Password = ""
+	return Response{
+		Code:     http.StatusOK,
+		Response: talent,
+	}
+}
+
+func DeleteTalentData(talentID string) Response {
+	var talent database.Talent
+	db := database.InitDB()
+	err := db.First(&talent, "ID=?", talentID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Talent not found",
+		}
+	}
+	err = db.Delete(&talent).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotImplemented,
+			Response: "Failed to delete data",
+		}
+	}
+	return Response{
+		Code:     http.StatusOK,
+		Response: "Talent deleted",
+	}
+}

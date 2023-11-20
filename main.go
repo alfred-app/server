@@ -25,6 +25,10 @@ func main() {
 
 	talentGroup.POST("/register", talent.RegisterHandler)
 	talentGroup.POST("/login", talent.LoginHandler)
+	talentGroup.GET("/:talentID", talent.GetTalentData)
+	talentGroup.PATCH("/:talentID", talent.UpdateHandler)
+	talentGroup.PATCH("/change-password/:talentID", talent.ChangePasswordHandler)
+	talentGroup.DELETE("/:talentID", talent.DeleteHandler)
 
 	router.Run()
 }

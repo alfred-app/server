@@ -17,6 +17,20 @@ type LoginBody struct {
 	Password string `json:"password"`
 }
 
+type EditTalentBody struct {
+	Email       string `json:"email"`
+	Name        string `json:"name"`
+	AboutMe     string `json:"about_me"`
+	ImageURL    string `json:"image_url"`
+	Address     string `json:"address"`
+	PhoneNumber string `json:"phone_number"`
+}
+
+type ChangePasswordBody struct {
+	OldPassword string `json:"old_password"`
+	NewPassword string `json:"new_password"`
+}
+
 type Payload struct {
 	ID    string `json:"id"`
 	Email string `json:"email"`
