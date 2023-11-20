@@ -2,6 +2,7 @@ package main
 
 import (
 	"alfred/client"
+	"alfred/middleware"
 	"alfred/talent"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,7 @@ func main() {
 
 	clientGroup.POST("/register", client.RegisterHandler)
 	clientGroup.POST("/login", client.LoginHandler)
-	clientGroup.GET("/:clientID", client.GetClientData)
+	clientGroup.GET("/:clientID", middleware.AuthenticationMiddleware, client.GetClientData)
 	clientGroup.PATCH("/:clientID", client.UpdateHandler)
 	clientGroup.PATCH("/change-password/:clientID", client.ChangePasswordHandler)
 
