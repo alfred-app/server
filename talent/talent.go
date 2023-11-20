@@ -146,3 +146,50 @@ func EditTalentData(talentID string, data *EditTalentBody) Response {
 		Response: talent,
 	}
 }
+
+func ChangePassword(talentID string, data *ChangePasswordBody) Response {
+	var talent database.Talent
+	saltStr := os.Getenv("HASH_SALT")
+	salt, err := strconv.Atoi(saltStr)
+	if err != nil {
+		return Response{
+			Code:     http.StatusInternalServerError,
+			Response: "Error converting salt",
+		}
+	}
+	db := database.InitDB()
+	err = db.First(&talent, "ID=?", talentID).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotFound,
+			Response: "Talent does not exist",
+		}
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(talent.Password), []byte(data.OldPassword))
+	if err != nil {
+		return Response{
+			Code:     http.StatusUnauthorized,
+			Response: "Password mismatch",
+		}
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.NewPassword), salt)
+	if err != nil {
+		return Response{
+			Code:     http.StatusInternalServerError,
+			Response: "Error generating hash password",
+		}
+	}
+	talent.Password = string(hashedPassword)
+	err = db.Save(&talent).Error
+	if err != nil {
+		return Response{
+			Code:     http.StatusNotImplemented,
+			Response: "Failed to update password",
+		}
+	}
+	talent.Password = ""
+	return Response{
+		Code:     http.StatusOK,
+		Response: talent,
+	}
+}
