@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### LOGIN
-POST http://localhost:8080/client/login
+POST https://alfred-server.up.railway.app/client/login
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ### GET CLIENT BY ID
 GET http://localhost:8080/client/98460ba2-14c0-46dc-8a10-631945c633f0
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4NDYwYmEyLTE0YzAtNDZkYy04YTEwLTYzMTk0NWM2MzNmMCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDQ3OTAxOX0.KywcqDbOMDrxhy8NdH3uhntIJyqty8xVwKfOBHpab2E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4NDYwYmEyLTE0YzAtNDZkYy04YTEwLTYzMTk0NWM2MzNmMCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDY2NDEyN30.Y1Ie6ivcquZKTP9xINL6ZQY4gXMFpVnVMtS9iIHkMzk
 
 ### UPDATE CLIENT DATA
 PATCH http://localhost:8080/client/98460ba2-14c0-46dc-8a10-631945c633f0
