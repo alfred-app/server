@@ -5,6 +5,8 @@ import (
 	"alfred/middleware"
 	"alfred/talent"
 
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -13,9 +15,14 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowAllOrigins: true,
-		AllowOrigins:    []string{"*"},
-		AllowMethods:    []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
+		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
 	}))
 	clientGroup := router.Group("/client")
 	talentGroup := router.Group("/talent")
