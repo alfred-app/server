@@ -14,6 +14,7 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins: true,
+		AllowOrigins:    []string{"*"},
 		AllowMethods:    []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
 	}))
 	clientGroup := router.Group("/client")
@@ -25,7 +26,7 @@ func main() {
 
 	clientGroup.POST("/register", client.RegisterHandler)
 	clientGroup.POST("/login", client.LoginHandler)
-	clientGroup.GET("/:clientID", middleware.AuthenticationMiddleware, client.GetClientData)
+	clientGroup.GET("/:clientID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.GetClientData)
 	clientGroup.PATCH("/:clientID", client.UpdateHandler)
 	clientGroup.PATCH("/change-password/:clientID", client.ChangePasswordHandler)
 
