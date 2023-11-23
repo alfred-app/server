@@ -53,3 +53,24 @@ func AuthorizationMiddleware(c *gin.Context) {
 	}
 	c.Next()
 }
+
+func RoleMiddleware(c *gin.Context) {
+	data, isExist := c.Get("token")
+	if !isExist {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "token data not found"})
+		c.Abort()
+		return
+	}
+	claims, ok := data.(jwt.MapClaims)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error parsing token data"})
+		c.Abort()
+		return
+	}
+	if claims["role"] != "talent" {
+		c.JSON(http.StatusForbidden, gin.H{"message": "Only Talents are allowed"})
+		c.Abort()
+		return
+	}
+	c.Next()
+}
