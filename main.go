@@ -22,9 +22,9 @@ func main() {
 
 	clientGroup.POST("/register", client.RegisterHandler)
 	clientGroup.POST("/login", client.LoginHandler)
-	clientGroup.GET("/:clientID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.GetClientData)
-	clientGroup.PATCH("/:clientID", client.UpdateHandler)
-	clientGroup.PATCH("/change-password/:clientID", client.ChangePasswordHandler)
+	clientGroup.GET("/:clientID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.RoleMiddleware, client.GetClientData)
+	clientGroup.PATCH("/:clientID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.UpdateHandler)
+	clientGroup.PATCH("/change-password/:clientID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.ChangePasswordHandler)
 
 	talentGroup.POST("/register", talent.RegisterHandler)
 	talentGroup.POST("/login", talent.LoginHandler)
