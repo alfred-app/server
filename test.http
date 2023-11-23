@@ -16,13 +16,13 @@ POST https://alfred-server.up.railway.app/client/login
 Content-Type: application/json
 
 {
-    "email": "client@example.com",
-    "password": "clientNewPassword"
+    "email": "client1@example.com",
+    "password": "client1"
 }
 
 ### GET CLIENT BY ID
-GET http://localhost:8080/client/98460ba2-14c0-46dc-8a10-631945c633f0
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4NDYwYmEyLTE0YzAtNDZkYy04YTEwLTYzMTk0NWM2MzNmMCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDY2NDEyN30.Y1Ie6ivcquZKTP9xINL6ZQY4gXMFpVnVMtS9iIHkMzk
+GET http://localhost:8080/client/0cb615b1-7cdf-45f5-ac8d-f079a243386e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4NDYwYmEyLTE0YzAtNDZkYy04YTEwLTYzMTk0NWM2MzNmMCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDc1MjI4NX0.M4w6nHs0OUIrm6MysWulu13sLfKovOFNbClynDKgc_M
 
 ### UPDATE CLIENT DATA
 PATCH http://localhost:8080/client/98460ba2-14c0-46dc-8a10-631945c633f0
