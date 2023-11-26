@@ -1,3 +1,4 @@
 .env
 /message.txt
 /run.bat
+/schema.prisma

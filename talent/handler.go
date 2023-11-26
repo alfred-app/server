@@ -28,14 +28,14 @@ func LoginHandler(c *gin.Context) {
 }
 
 func GetTalentData(c *gin.Context) {
-	talentID := c.Param("talentID")
+	talentID := c.Param("userID")
 	response := GetTalentByID(talentID)
 	c.JSON(response.Code, response.Response)
 }
 
 func UpdateHandler(c *gin.Context) {
 	var requestBody EditTalentBody
-	talentID := c.Param("talentID")
+	talentID := c.Param("userID")
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -46,7 +46,7 @@ func UpdateHandler(c *gin.Context) {
 
 func ChangePasswordHandler(c *gin.Context) {
 	var requestBody ChangePasswordBody
-	talentID := c.Param("talentID")
+	talentID := c.Param("userID")
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -56,7 +56,7 @@ func ChangePasswordHandler(c *gin.Context) {
 }
 
 func DeleteHandler(c *gin.Context) {
-	talentID := c.Param("talentID")
+	talentID := c.Param("userID")
 	response := DeleteTalentData(talentID)
 	c.JSON(response.Code, response.Response)
 }

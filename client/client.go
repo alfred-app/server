@@ -2,6 +2,7 @@ package client
 
 import (
 	"alfred/database"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -76,8 +77,9 @@ func LoginClient(data *LoginBody) Response {
 func GetClientByID(clientID string) Response {
 	var client database.Client
 	db := database.InitDB()
-	err := db.First(&client, "ID=?", clientID).Error
+	err := db.Model(&database.Client{}).Preload("Jobs").Find(&client, "ID=?", clientID).Error
 	if err != nil {
+		fmt.Println(err)
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Client not found",
