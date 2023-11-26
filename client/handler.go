@@ -29,14 +29,14 @@ func LoginHandler(c *gin.Context) {
 }
 
 func GetClientData(c *gin.Context) {
-	clientID := c.Param("clientID")
+	clientID := c.Param("userID")
 	response := GetClientByID(clientID)
 	c.JSON(response.Code, response.Response)
 }
 
 func UpdateHandler(c *gin.Context) {
 	var requestBody EditClientBody
-	clientID := c.Param("clientID")
+	clientID := c.Param("userID")
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -47,7 +47,7 @@ func UpdateHandler(c *gin.Context) {
 
 func ChangePasswordHandler(c *gin.Context) {
 	var requestBody ChangePasswordBody
-	clientID := c.Param("clientID")
+	clientID := c.Param("userID")
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
