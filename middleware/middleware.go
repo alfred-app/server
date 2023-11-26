@@ -34,7 +34,7 @@ func AuthenticationMiddleware(c *gin.Context) {
 
 func AuthorizationMiddleware(c *gin.Context) {
 	data, isExist := c.Get("token")
-	clientID := c.Param("clientID")
+	clientID := c.Param("userID")
 	if !isExist {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Token data not found"})
 		c.Abort()
@@ -54,7 +54,7 @@ func AuthorizationMiddleware(c *gin.Context) {
 	c.Next()
 }
 
-func RoleMiddleware(c *gin.Context) {
+func TalentGuard(c *gin.Context) {
 	data, isExist := c.Get("token")
 	if !isExist {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "token data not found"})
@@ -69,6 +69,27 @@ func RoleMiddleware(c *gin.Context) {
 	}
 	if claims["role"] != "talent" {
 		c.JSON(http.StatusForbidden, gin.H{"message": "Only Talents are allowed"})
+		c.Abort()
+		return
+	}
+	c.Next()
+}
+
+func ClientGuard(c *gin.Context) {
+	data, isExist := c.Get("token")
+	if !isExist {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "token data not found"})
+		c.Abort()
+		return
+	}
+	claims, ok := data.(jwt.MapClaims)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error parsing token data"})
+		c.Abort()
+		return
+	}
+	if claims["role"] != "client" {
+		c.JSON(http.StatusForbidden, gin.H{"message": "Only Clients are allowed"})
 		c.Abort()
 		return
 	}

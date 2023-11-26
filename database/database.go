@@ -10,48 +10,49 @@ import (
 )
 
 type Client struct {
-	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	Email       string    `gorm:"unique;not null"`
-	Password    string
-	Name        string
-	Address     string
-	PhoneNumber string
-	ImageURL    string
-	Jobs        []Jobs `gorm:"foreignKey:ClientID"`
+	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	Email       string    `gorm:"unique" json:"email"`
+	Password    string    `json:"password"`
+	Name        string    `json:"name"`
+	Address     string    `json:"address"`
+	PhoneNumber string    `json:"phoneNumber"`
+	ImageURL    string    `json:"imageURL"`
+	Jobs        []Jobs    `gorm:"foreignKey:ClientID; references:ID" json:"jobs"`
 }
 
 type Talent struct {
-	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	Email       string    `gorm:"unique;not null"`
-	Password    string
-	Name        string
-	AboutMe     string
-	ImageURL    string
-	Address     string
-	PhoneNumber string
-	Jobs        []Jobs          `gorm:"foreignKey:TalentID"`
-	OnAuction   []JobsOnAuction `gorm:"foreignKey:TalentID"`
+	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	Email       string    `gorm:"unique" json:"email"`
+	Password    string    `json:"password"`
+	Name        string    `json:"name"`
+	AboutMe     string    `json:"aboutMe"`
+	ImageURL    string    `json:"imageURL"`
+	Address     string    `json:"address"`
+	PhoneNumber string    `json:"phoneNumber"`
+	Jobs        []Jobs    `gorm:"foreignKey:TalentID; references:ID" json:"jobs"`
+	PlacedBid   []BidList `gorm:"foreignKey:TalentID; references:ID" json:"placedBid"`
 }
 
 type Jobs struct {
-	ID           uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	ClientID     uuid.UUID `gorm:"type:uuid"`
-	TalentID     uuid.UUID
-	Name         string
-	Descriptions string
-	FixedPrice   uint16
-	Address      string
-	Latitude     float64
-	Longitude    float64
-	ImageURL     string
+	ID           uuid.UUID  `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	ClientID     uuid.UUID  `json:"clientID"`
+	TalentID     *uuid.UUID `gorm:"default:null; references:ID" json:"talentID"`
+	Name         string     `json:"name"`
+	Descriptions string     `json:"descriptions"`
+	FixedPrice   int        `gorm:"default:null" json:"fixedPrice"`
+	Address      string     `json:"address"`
+	Latitude     float64    `json:"latitude"`
+	Longitude    float64    `json:"longitude"`
+	ImageURL     string     `json:"imageURL"`
+	BidList      []BidList  `gorm:"foreignKey:JobID; references:ID" json:"bidList"`
 }
 
-type JobsOnAuction struct {
-	ID           uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	TalentID     uuid.UUID
-	PriceOnBid   int
-	StartAuction time.Time
-	EndAuction   time.Time
+type BidList struct {
+	ID         uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	TalentID   uuid.UUID `json:"talentID"`
+	JobID      uuid.UUID `json:"jobID"`
+	PriceOnBid int       `json:"priceOnBid"`
+	BidPlaced  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"bidPlaced"`
 }
 
 func InitDB() *gorm.DB {
@@ -64,8 +65,5 @@ func InitDB() *gorm.DB {
 }
 
 func MigrateDB(db *gorm.DB) {
-	db.AutoMigrate(Client{})
-	db.AutoMigrate(Talent{})
-	db.AutoMigrate(Jobs{})
-	db.AutoMigrate(JobsOnAuction{})
+	db.AutoMigrate(&Client{}, &Talent{}, &Jobs{}, &BidList{})
 }

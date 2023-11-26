@@ -1,31 +1,32 @@
 ### REGISTER
-POST http://localhost:8080/client/register
+POST https://alfred-server.up.railway.app/client/register
 Content-Type: application/json
 
 {
-    "email": "client2@example.com",
-    "name": "client2",
-    "password":"client2",
+    "email": "client@example.com",
+    "name": "client",
+    "password":"client",
     "phone_number":"123",
     "address":"local",
     "image_url":"images"
 }
 
 ### LOGIN
-POST http://localhost:8080/client/login
+POST https://alfred-server.up.railway.app/client/login
 Content-Type: application/json
 
 {
-    "email": "client1@example.com",
-    "password": "client1"
+    "email": "client@example.com",
+    "password": "client"
 }
 
 ### GET CLIENT BY ID
-GET http://localhost:8080/client/0cb615b1-7cdf-45f5-ac8d-f079a243386e
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBjYjYxNWIxLTdjZGYtNDVmNS1hYzhkLWYwNzlhMjQzMzg2ZSIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJjbGllbnQiLCJleHAiOjE3MDA4NDA4MDF9.7jXFx_SQdNuNxbfGHw4UgUhwwlxXY85hvwJ8Q2UUAhI
+GET http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkwNzY3MX0.vr0mY2K_6fDGVW4lTO37n5hO4AxhevyW3zBAQiA7oH0
 
 ### UPDATE CLIENT DATA
-PATCH http://localhost:8080/client/98460ba2-14c0-46dc-8a10-631945c633f0
+PATCH http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
 Content-Type: application/json
 
 {
@@ -34,7 +35,8 @@ Content-Type: application/json
 }
 
 ### CHANGE PASSWORD
-PATCH http://localhost:8080/client/change-password/98460ba2-14c0-46dc-8a10-631945c633f0
+PATCH http://localhost:8080/client/change-password/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
 Content-Type: application/json
 
 {
@@ -42,5 +44,16 @@ Content-Type: application/json
     "new_password":"clientNewPassword"
 }
 
-### BASE TEST
-GET http://localhost:8080
+### POST A JOB
+POST http://localhost:8080/job/create-job/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
+Content-Type: application/json
+
+{
+    "name": "Bersih-bersih kebun",
+    "description": "Bersih-bersih kebun 1 hektar",
+    "address": "Jl. Jalan-jalan no 54 Jakarta",
+    "latitude": -7.1234,
+    "longitude": 108.1234,
+    "imageURL":"abcde"
+}
