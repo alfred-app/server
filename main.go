@@ -1,6 +1,7 @@
 package main
 
 import (
+	"alfred/bid"
 	"alfred/client"
 	"alfred/database"
 	"alfred/job"
@@ -21,6 +22,7 @@ func main() {
 	clientGroup := router.Group("/client")
 	talentGroup := router.Group("/talent")
 	jobGroup := router.Group("/job")
+	bidGroup := router.Group("/bid")
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Hello, world!")
@@ -28,6 +30,9 @@ func main() {
 
 	clientGroup.POST("/register", client.RegisterHandler)
 	clientGroup.POST("/login", client.LoginHandler)
+	clientGroup.GET("/:userID", client.GetClientData)
+	clientGroup.PATCH("/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.UpdateHandler)
+	clientGroup.PATCH("/change-password/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.ChangePasswordHandler)
 	clientGroup.GET("/:userID", client.GetClientData)
 	clientGroup.PATCH("/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.UpdateHandler)
 	clientGroup.PATCH("/change-password/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.ChangePasswordHandler)
@@ -42,5 +47,8 @@ func main() {
 	jobGroup.GET("/", job.GetAllJobHandler)
 	jobGroup.POST("/create-job/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
+
+	bidGroup.POST("/create-bid/:jobID/:talentID", bid.CreateBidHandler)
+
 	router.Run()
 }

@@ -25,7 +25,7 @@ func RegisterClient(data *RegisterBody) Response {
 	data.Password = string(hashedPassword)
 	new, err := uuid.NewUUID()
 	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: "Error generating id"}
+		return Response{Code: http.StatusInternalServerError, Response: "Error generating ID"}
 	}
 	client = database.Client{
 		ID:          new,
