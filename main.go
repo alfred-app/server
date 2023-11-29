@@ -33,9 +33,6 @@ func main() {
 	clientGroup.GET("/:userID", client.GetClientData)
 	clientGroup.PATCH("/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.UpdateHandler)
 	clientGroup.PATCH("/change-password/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.ChangePasswordHandler)
-	clientGroup.GET("/:userID", client.GetClientData)
-	clientGroup.PATCH("/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.UpdateHandler)
-	clientGroup.PATCH("/change-password/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, client.ChangePasswordHandler)
 
 	talentGroup.POST("/register", talent.RegisterHandler)
 	talentGroup.POST("/login", talent.LoginHandler)
