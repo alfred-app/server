@@ -3,7 +3,6 @@ package main
 import (
 	"alfred/bid"
 	"alfred/client"
-	"alfred/database"
 	"alfred/job"
 	"alfred/middleware"
 	"alfred/talent"
@@ -16,8 +15,6 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.Use(cors.Default())
-	db := database.InitDB()
-	database.MigrateDB(db)
 
 	clientGroup := router.Group("/client")
 	talentGroup := router.Group("/talent")
