@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,7 +25,12 @@ func RegisterTalent(data *RegisterBody) Response {
 		return Response{Code: http.StatusInternalServerError, Response: "Error generating hash password"}
 	}
 	data.Password = string(hashedPassword)
+	new, err := uuid.NewUUID()
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error generating id"}
+	}
 	talent = database.Talent{
+		ID:          new,
 		Email:       data.Email,
 		Name:        data.Name,
 		Password:    data.Password,

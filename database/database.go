@@ -11,48 +11,48 @@ import (
 
 type Client struct {
 	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	Email       string    `gorm:"unique" json:"email"`
-	Password    string    `json:"password"`
-	Name        string    `json:"name"`
-	Address     string    `json:"address"`
-	PhoneNumber string    `json:"phoneNumber"`
-	ImageURL    string    `json:"imageURL"`
+	Email       string    `gorm:"column:email; unique" json:"email"`
+	Password    string    `gorm:"column:password" json:"password"`
+	Name        string    `gorm:"column:name" json:"name"`
+	Address     string    `gorm:"column:address" json:"address"`
+	PhoneNumber string    `gorm:"column:phoneNumber" json:"phoneNumber"`
+	ImageURL    string    `gorm:"column:imageURL" json:"imageURL"`
 	Jobs        []Jobs    `gorm:"foreignKey:ClientID; references:ID" json:"jobs"`
 }
 
 type Talent struct {
 	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	Email       string    `gorm:"unique" json:"email"`
-	Password    string    `json:"password"`
-	Name        string    `json:"name"`
-	AboutMe     string    `json:"aboutMe"`
-	ImageURL    string    `json:"imageURL"`
-	Address     string    `json:"address"`
-	PhoneNumber string    `json:"phoneNumber"`
+	Email       string    `gorm:"column:email; unique" json:"email"`
+	Password    string    `gorm:"column:password" json:"password"`
+	Name        string    `gorm:"column:name" json:"name"`
+	AboutMe     string    `gorm:"column:aboutMe" json:"aboutMe"`
+	ImageURL    string    `gorm:"column:imageURL" json:"imageURL"`
+	Address     string    `gorm:"column:address" json:"address"`
+	PhoneNumber string    `gorm:"column:phoneNumber" json:"phoneNumber"`
 	Jobs        []Jobs    `gorm:"foreignKey:TalentID; references:ID" json:"jobs"`
 	PlacedBid   []BidList `gorm:"foreignKey:TalentID; references:ID" json:"placedBid"`
 }
 
 type Jobs struct {
 	ID           uuid.UUID  `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	ClientID     uuid.UUID  `json:"clientID"`
-	TalentID     *uuid.UUID `gorm:"default:null; references:ID" json:"talentID"`
-	Name         string     `json:"name"`
-	Descriptions string     `json:"descriptions"`
-	FixedPrice   int        `gorm:"default:null" json:"fixedPrice"`
-	Address      string     `json:"address"`
-	Latitude     float64    `json:"latitude"`
-	Longitude    float64    `json:"longitude"`
-	ImageURL     string     `json:"imageURL"`
+	ClientID     uuid.UUID  `gorm:"column:clientID" json:"clientID"`
+	TalentID     *uuid.UUID `gorm:"column:talentID; default:null; references:ID" json:"talentID"`
+	Name         string     `gorm:"column:name" json:"name"`
+	Descriptions string     `gorm:"column:descriptions" json:"descriptions"`
+	FixedPrice   int        `gorm:"column:fixedPrice; default:null" json:"fixedPrice"`
+	Address      string     `gorm:"column:address" json:"address"`
+	Latitude     float64    `gorm:"column:latitude" json:"latitude"`
+	Longitude    float64    `gorm:"column:longitude" json:"longitude"`
+	ImageURL     string     `gorm:"column:imageURL" json:"imageURL"`
 	BidList      []BidList  `gorm:"foreignKey:JobID; references:ID" json:"bidList"`
 }
 
 type BidList struct {
 	ID         uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	TalentID   uuid.UUID `json:"talentID"`
-	JobID      uuid.UUID `json:"jobID"`
-	PriceOnBid int       `json:"priceOnBid"`
-	BidPlaced  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"bidPlaced"`
+	TalentID   uuid.UUID `gorm:"column:talentID" json:"talentID"`
+	JobID      uuid.UUID `gorm:"column:jobID" json:"jobID"`
+	PriceOnBid int       `gorm:"column:priceOnBid" json:"priceOnBid"`
+	BidPlaced  time.Time `gorm:"column:bidPlaced;default:CURRENT_TIMESTAMP" json:"bidPlaced"`
 }
 
 func InitDB() *gorm.DB {

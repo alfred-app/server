@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -22,7 +23,12 @@ func RegisterClient(data *RegisterBody) Response {
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), salt)
 	data.Password = string(hashedPassword)
+	new, err := uuid.NewUUID()
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error generating id"}
+	}
 	client = database.Client{
+		ID:          new,
 		Email:       data.Email,
 		Name:        data.Name,
 		Password:    data.Password,
