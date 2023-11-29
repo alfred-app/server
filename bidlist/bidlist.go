@@ -14,6 +14,9 @@ func CreateBidList(data *CreateBidListBody, talentID string) Response {
 	db := database.InitDB()
 
 	parsedID, err := uuid.Parse(talentID)
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error parsing talent ID"}
+	}
 
 	parsedBidPlaced, err := time.Parse(time.RFC3339, data.BidPlaced)
 	if err != nil {
