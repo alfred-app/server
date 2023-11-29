@@ -10,7 +10,7 @@ import (
 )
 
 type Client struct {
-	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	ID          uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey" json:"id"`
 	Email       string    `gorm:"unique" json:"email"`
 	Password    string    `json:"password"`
 	Name        string    `json:"name"`
@@ -21,7 +21,7 @@ type Client struct {
 }
 
 type Talent struct {
-	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	ID          uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey" json:"id"`
 	Email       string    `gorm:"unique" json:"email"`
 	Password    string    `json:"password"`
 	Name        string    `json:"name"`
@@ -34,7 +34,7 @@ type Talent struct {
 }
 
 type Jobs struct {
-	ID           uuid.UUID  `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	ID           uuid.UUID  `gorm:"type:uuid;default:uuid_generate_v4();primaryKey" json:"id"`
 	ClientID     uuid.UUID  `json:"clientID"`
 	TalentID     *uuid.UUID `gorm:"default:null; references:ID" json:"talentID"`
 	Name         string     `json:"name"`
@@ -48,9 +48,9 @@ type Jobs struct {
 }
 
 type BidList struct {
-	ID         uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	TalentID   uuid.UUID `json:"talentID"`
-	JobID      uuid.UUID `json:"jobID"`
+	ID         uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey" json:"id"`
+	TalentID   uuid.UUID `gorm:"references:ID" json:"talentID"`
+	JobID      uuid.UUID `gorm:"references:ID" json:"jobID"`
 	PriceOnBid int       `json:"priceOnBid"`
 	BidPlaced  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"bidPlaced"`
 }

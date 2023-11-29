@@ -22,11 +22,11 @@ Content-Type: application/json
 
 ### GET CLIENT BY ID
 GET http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkwNzY3MX0.vr0mY2K_6fDGVW4lTO37n5hO4AxhevyW3zBAQiA7oH0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 
 ### UPDATE CLIENT DATA
 PATCH http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 ### CHANGE PASSWORD
 PATCH http://localhost:8080/client/change-password/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
 
 {
@@ -45,15 +45,31 @@ Content-Type: application/json
 }
 
 ### POST A JOB
-POST http://localhost:8080/job/create-job/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
+POST https://alfred-server.up.railway.app/job/create-job/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
 
 {
-    "name": "Bersih-bersih kebun",
-    "description": "Bersih-bersih kebun 1 hektar",
+    "name": "Bersih-bersih kebun kelas 2",
+    "description": "Bersih-bersih kebun 10 hektar",
     "address": "Jl. Jalan-jalan no 54 Jakarta",
     "latitude": -7.1234,
     "longitude": 108.1234,
     "imageURL":"abcde"
+}
+
+### GET JOB BY JOB ID
+GET http://localhost:8080/job/00b18d1d-91e5-4903-9434-53cd703489e2
+
+### GET ALL JOB
+GET http://localhost:8080/job
+
+
+### CREATE ROOM
+POST http://localhost:8080/ws/createRoom
+Content-Type: application/json
+
+{
+    "id": "1",
+    "name":"room1"
 }
