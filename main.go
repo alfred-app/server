@@ -1,7 +1,9 @@
 package main
 
 import (
+	"alfred/bid"
 	"alfred/client"
+	"alfred/database"
 	"alfred/job"
 	"alfred/middleware"
 	"alfred/talent"
@@ -15,9 +17,13 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
+	db := database.InitDB()
+	database.MigrateDB(db)
+
 	clientGroup := router.Group("/client")
 	talentGroup := router.Group("/talent")
 	jobGroup := router.Group("/job")
+	bidGroup := router.Group("/bid")
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Hello, world!")
@@ -39,5 +45,8 @@ func main() {
 	jobGroup.GET("/", job.GetAllJobHandler)
 	jobGroup.POST("/create-job/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
+
+	bidGroup.POST("/create-bid/:jobID/:talentID", bid.CreateBidHandler)
+
 	router.Run()
 }
