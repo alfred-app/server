@@ -23,10 +23,6 @@ func CreateBidList(data *CreateBidListBody, talentID string) Response {
 		return Response{Code: http.StatusInternalServerError, Response: "Error parsing bid placed"}
 	}
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: "Error parsing talent ID"}
-	}
-
 	bidList = database.BidList{
 		TalentID:   parsedID,
 		JobID:      parsedID,
