@@ -18,7 +18,14 @@ func CreateJob(data *CreateJobBody, clientID string) Response {
 		return Response{Code: http.StatusInternalServerError, Response: "Error parsing client ID"}
 	}
 
+	new, err := uuid.NewUUID()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error generating id"}
+	}
+
 	job = database.Jobs{
+		ID:           new,
 		ClientID:     parsedID,
 		Name:         data.Name,
 		Descriptions: data.Descriptions,

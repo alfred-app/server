@@ -6,6 +6,9 @@ Content-Type: application/json
     "email": "client@example.com",
     "name": "client",
     "password":"client",
+    "email": "client@example.com",
+    "name": "client",
+    "password":"client",
     "phone_number":"123",
     "address":"local",
     "image_url":"images"
@@ -18,15 +21,21 @@ Content-Type: application/json
 {
     "email": "client@example.com",
     "password": "client"
+    "email": "client@example.com",
+    "password": "client"
 }
 
 ### GET CLIENT BY ID
 GET http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkwNzY3MX0.vr0mY2K_6fDGVW4lTO37n5hO4AxhevyW3zBAQiA7oH0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
+GET http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 
 ### UPDATE CLIENT DATA
 PATCH http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
+PATCH http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
 
 {
@@ -36,7 +45,9 @@ Content-Type: application/json
 
 ### CHANGE PASSWORD
 PATCH http://localhost:8080/client/change-password/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
+PATCH http://localhost:8080/client/change-password/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
 
 {
@@ -45,13 +56,13 @@ Content-Type: application/json
 }
 
 ### POST A JOB
-POST http://localhost:8080/job/create-job/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMDkyMTkwOH0.WRG1ATd2zBb2U_5ebzUCwwFHVK1wZtew-66xQUEriZ4
+POST https://alfred-server.up.railway.app/job/create-job/ebbaa178-a260-4da0-9020-bacc68faad96
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
 
 {
-    "name": "Bersih-bersih kebun",
-    "description": "Bersih-bersih kebun 1 hektar",
+    "name": "Bersih-bersih kebun kelas 2",
+    "description": "Bersih-bersih kebun 10 hektar",
     "address": "Jl. Jalan-jalan no 54 Jakarta",
     "latitude": -7.1234,
     "longitude": 108.1234,
@@ -66,5 +77,4 @@ Content-Type: application/json
     "job_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
     "bidder_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
     "priceOnBid": 100000,
-    "bidPlaced": "2022-01-01T12:00:00Z"
 }
