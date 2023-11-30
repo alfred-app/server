@@ -69,31 +69,12 @@ Content-Type: application/json
     "imageURL":"abcde"
 }
 
-### GET JOB BY JOB ID
-GET http://localhost:8080/job/00b18d1d-91e5-4903-9434-53cd703489e2
-
-### GET ALL JOB
-GET http://localhost:8080/job
-
-
-### REGISTER TALENT
-POST http://localhost:8080/talent/register
+POST http://localhost:8080/bidlist/create-bidlist/
+Authorization: Bearer
 Content-Type: application/json
 
 {
-    "email": "talent@example.com",
-    "name": "talent",
-    "password":"talent",
-    "phone_number":"123",
-    "address":"local",
-    "image_url":"images"
-}
-
-### LOGIN TALENT
-POST http://localhost:8080/talent/login
-Content-Type: application/json
-
-{
-    "email": "talent@example.com",
-    "password": "talent"
+    "job_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
+    "bidder_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
+    "priceOnBid": 100000,
 }
