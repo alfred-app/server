@@ -1,6 +1,7 @@
 package main
 
 import (
+	"alfred/bidlist"
 	"alfred/client"
 	"alfred/job"
 	"alfred/middleware"
@@ -18,6 +19,7 @@ func main() {
 	clientGroup := router.Group("/client")
 	talentGroup := router.Group("/talent")
 	jobGroup := router.Group("/job")
+	bidlistGroup := router.Group("bidlist")
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Hello, world!")
@@ -39,5 +41,11 @@ func main() {
 	jobGroup.GET("/", job.GetAllJobHandler)
 	jobGroup.POST("/create-job/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
+
+	bidlistGroup.GET("/", middleware.AuthenticationMiddleware, bidlist.GetAllBidListHandler)
+	bidlistGroup.GET(":/bidListID", middleware.AuthenticationMiddleware, bidlist.GetBidListByIDHandler)
+	bidlistGroup.POST(":/create-bidlist/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.CreateBidListHandler)
+	bidlistGroup.DELETE("/:bidListID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.DeleteBidListHandler)
+
 	router.Run()
 }
