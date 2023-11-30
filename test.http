@@ -57,3 +57,14 @@ Content-Type: application/json
     "longitude": 108.1234,
     "imageURL":"abcde"
 }
+
+POST http://localhost:8080/bidlist/create-bidlist/
+Authorization: Bearer
+Content-Type: application/json
+
+{
+    "job_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
+    "bidder_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
+    "priceOnBid": 100000,
+    "bidPlaced": "2022-01-01T12:00:00Z"
+}
