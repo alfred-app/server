@@ -43,8 +43,8 @@ func main() {
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
 
 	bidlistGroup.GET("/", middleware.AuthenticationMiddleware, bidlist.GetAllBidListHandler)
-	bidlistGroup.GET(":/bidListID", middleware.AuthenticationMiddleware, bidlist.GetBidListByIDHandler)
-	bidlistGroup.POST(":/create-bidlist/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.CreateBidListHandler)
+	bidlistGroup.GET("/:bidListID", middleware.AuthenticationMiddleware, bidlist.GetBidListByIDHandler)
+	bidlistGroup.POST("/:create-bidlist/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.CreateBidListHandler)
 	bidlistGroup.DELETE("/:bidListID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.DeleteBidListHandler)
 
 	router.Run()
