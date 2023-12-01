@@ -36,6 +36,7 @@ func CreateJob(data *CreateJobBody, clientID string) Response {
 	}
 
 	err = db.Create(&job).Error
+	fmt.Println(job)
 
 	if err != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error creating job"}

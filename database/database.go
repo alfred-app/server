@@ -55,6 +55,23 @@ type BidList struct {
 	BidPlaced  time.Time `gorm:"column:bidPlaced;default:CURRENT_TIMESTAMP" json:"bidPlaced"`
 }
 
+type Notification struct {
+	ID         uuid.UUID `gorm:"type:uuid; default:gen_random_uuid();primaryKey" json:"id"`
+	Content    string    `gorm:"column:content" json:"content"`
+	ContentURL string    `gorm:"column:contentURL" json:"contentURL"`
+	DateTime   time.Time `gorm:"column:dateTime;default:CURRENT_TIMESTAMP" json:"dateTime"`
+	TargetId   string    `gorm:"column:targetId" json:"targetId"`
+	SenderId   string    `gorm:"column:senderId" json:"senderId"`
+}
+
+type Chat struct {
+	ID       uuid.UUID `gorm:"type:uuid; default:gen_random_uuid();primaryKey" json:"id"`
+	Message  string    `gorm:"column:message" json:"message"`
+	DateTime time.Time `gorm:"column:dateTime" json:"dateTime"`
+	SenderId string    `gorm:"column:senderId" json:"senderId"`
+	TargetId string    `gorm:"column:targetId" json:"targetId"`
+}
+
 func InitDB() *gorm.DB {
 	dsn := os.Getenv("DATABASE_URL")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})

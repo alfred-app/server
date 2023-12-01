@@ -7,19 +7,31 @@ import (
 	"alfred/middleware"
 	"alfred/talent"
 
-	"github.com/gin-contrib/cors"
+	// "github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
+func CORS(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT")
+	c.Header("Access-Control-Allow-Headers", "Authorization, Content-Type")
+	c.Header("Access-Control-Allow-Credentials", "true")
+
+	if c.Request.Method == "OPTIONS" {
+		c.AbortWithStatus(200)
+		return
+	}
+}
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	router.Use(cors.Default())
+	router.Use(CORS)
 
 	clientGroup := router.Group("/client")
 	talentGroup := router.Group("/talent")
 	jobGroup := router.Group("/job")
-	bidlistGroup := router.Group("bidlist")
+	bidlistGroup := router.Group("/bidlist")
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Hello, world!")
@@ -38,7 +50,7 @@ func main() {
 	talentGroup.PATCH("/change-password/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, talent.ChangePasswordHandler)
 	talentGroup.DELETE("/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, talent.DeleteHandler)
 
-	jobGroup.GET("/", job.GetAllJobHandler)
+	jobGroup.GET("/all", job.GetAllJobHandler)
 	jobGroup.POST("/create-job/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
 

@@ -20,7 +20,7 @@ Content-Type: application/json
 
 {
     "email": "client@example.com",
-    "password": "client"
+    "password": "client",
     "email": "client@example.com",
     "password": "client"
 }
@@ -56,8 +56,8 @@ Content-Type: application/json
 }
 
 ### POST A JOB
-POST https://alfred-server.up.railway.app/job/create-job/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
+POST https://alfred-server.up.railway.app/job/create-job/8ccfe16f-902f-11ee-897a-eec53a9db58b
+Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjY2ZlMTZmLTkwMmYtMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUxMDg0OX0.YFmCP_wsmKUxmdUrJ6YEXO78VWuJ_fbeJiZzhdI7-XA
 Content-Type: application/json
 
 {

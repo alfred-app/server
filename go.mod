@@ -3,7 +3,6 @@ module alfred
 go 1.20
 
 require (
-	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.4.0
 	gorm.io/driver/postgres v1.5.4
@@ -12,6 +11,7 @@ require (
 
 require (
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 )
 
