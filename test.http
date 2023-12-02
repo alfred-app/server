@@ -3,12 +3,9 @@ POST https://alfred-server.up.railway.app/client/register
 Content-Type: application/json
 
 {
-    "email": "client@example.com",
-    "name": "client",
-    "password":"client",
-    "email": "client@example.com",
-    "name": "client",
-    "password":"client",
+    "email": "client1@example.com",
+    "name": "client1",
+    "password":"client1",
     "phone_number":"123",
     "address":"local",
     "image_url":"images"
@@ -19,21 +16,15 @@ POST https://alfred-server.up.railway.app/client/login
 Content-Type: application/json
 
 {
-    "email": "client@example.com",
-    "password": "client",
-    "email": "client@example.com",
-    "password": "client"
+    "email": "client1@example.com",
+    "password": "client1"
 }
 
 ### GET CLIENT BY ID
-GET http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
-GET http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
+GET https://alfred-server.up.railway.app/client/c74b69fa-9032-11ee-897a-eec53a9db58b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUxMjIzMH0.e7lLM0inXiCh9UDSW-5Afq-7AnbYTKMW6kaRIkWz-HQ
 
 ### UPDATE CLIENT DATA
-PATCH http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 PATCH http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
@@ -46,8 +37,6 @@ Content-Type: application/json
 ### CHANGE PASSWORD
 PATCH http://localhost:8080/client/change-password/ebbaa178-a260-4da0-9020-bacc68faad96
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
-PATCH http://localhost:8080/client/change-password/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
 Content-Type: application/json
 
 {
@@ -56,19 +45,30 @@ Content-Type: application/json
 }
 
 ### POST A JOB
-POST https://alfred-server.up.railway.app/job/create-job/8ccfe16f-902f-11ee-897a-eec53a9db58b
-Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjY2ZlMTZmLTkwMmYtMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUxMDg0OX0.YFmCP_wsmKUxmdUrJ6YEXO78VWuJ_fbeJiZzhdI7-XA
+POST https://alfred-server.up.railway.app/job/create-job/c74b69fa-9032-11ee-897a-eec53a9db58b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUxMjIzMH0.e7lLM0inXiCh9UDSW-5Afq-7AnbYTKMW6kaRIkWz-HQ
 Content-Type: application/json
 
 {
-    "name": "Bersih-bersih kebun kelas 2",
-    "description": "Bersih-bersih kebun 10 hektar",
+    "name": "Bersih-bersih kebun kelas 1",
+    "descriptions": "Bersih-bersih kebun 20 hektar",
     "address": "Jl. Jalan-jalan no 54 Jakarta",
     "latitude": -7.1234,
     "longitude": 108.1234,
     "imageURL":"abcde"
 }
 
+### GET ALL JOBS
+GET https://alfred-server.up.railway.app/job/all
+
+### GET JOBS BY CLIENTID
+GET http://localhost:8080/job/client/67e3d43a-9055-11ee-8214-da713a40a86b
+
+### GET JOB DETAILS
+GET http://localhost:8080/job/3ccf72a5-9033-11ee-aa4c-00ff0d200ebe
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUyODM5MX0.0BqWDCCwEu-nN3wVhDiMdvCjXP_jc8BSlPUrX74iYSc
+
+### POST A BID
 POST http://localhost:8080/bidlist/create-bidlist/
 Authorization: Bearer
 Content-Type: application/json

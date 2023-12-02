@@ -29,6 +29,17 @@ func GetJobByIDHandler(c *gin.Context) {
 
 func GetAllJobHandler(c *gin.Context) {
 	response := GetAllJobs()
+	c.JSON(response.Code, response.Response)
+}
 
+func GetJobByTalentIDHandler(c *gin.Context) {
+	talentID := c.Param("talentID")
+	response := GetJobByTalentID(talentID)
+	c.JSON(response.Code, response.Response)
+}
+
+func GetJobByClientIDHandler(c *gin.Context) {
+	clientID := c.Param("clientID")
+	response := GetJobByClientID(clientID)
 	c.JSON(response.Code, response.Response)
 }

@@ -16,6 +16,13 @@ import (
 func RegisterClient(data *RegisterBody) Response {
 	var client database.Client
 	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
@@ -47,10 +54,17 @@ func RegisterClient(data *RegisterBody) Response {
 func LoginClient(data *LoginBody) Response {
 	var client database.Client
 	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
 	jwtKey := os.Getenv("JWT_KEY")
 	jwtByte := []byte(jwtKey)
 
-	err := db.First(&client, "email=?", data.Email).Error
+	err = db.First(&client, "email=?", data.Email).Error
 	if err != nil {
 		return Response{Code: http.StatusNotFound, Response: "Client not Found"}
 	}
@@ -83,7 +97,14 @@ func LoginClient(data *LoginBody) Response {
 func GetClientByID(clientID string) Response {
 	var client database.Client
 	db := database.InitDB()
-	err := db.Model(&database.Client{}).Preload("Jobs").Find(&client, "ID=?", clientID).Error
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	err = db.Model(&database.Client{}).Preload("Jobs").Find(&client, "ID=?", clientID).Error
 	if err != nil {
 		fmt.Println(err)
 		return Response{
@@ -108,7 +129,14 @@ func GetValueOrDefault(value string, defaultValue string) string {
 func EditClientData(clientID string, data *EditClientBody) Response {
 	var client database.Client
 	db := database.InitDB()
-	err := db.First(&client, "ID=?", clientID).Error
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	err = db.First(&client, "ID=?", clientID).Error
 	if err != nil {
 		return Response{
 			Code:     http.StatusNotFound,
@@ -145,6 +173,13 @@ func ChangePassword(clientID string, data *ChangePasswordBody) Response {
 		}
 	}
 	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
 	err = db.First(&client, "ID=?", clientID).Error
 	if err != nil {
 		return Response{

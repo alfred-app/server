@@ -12,6 +12,14 @@ func CreateJob(data *CreateJobBody, clientID string) Response {
 	var job database.Jobs
 	db := database.InitDB()
 
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+
 	parsedID, err := uuid.Parse(clientID)
 
 	if err != nil {
@@ -47,21 +55,83 @@ func CreateJob(data *CreateJobBody, clientID string) Response {
 func GetJobByID(jobID string) Response {
 	var job database.Jobs
 	db := database.InitDB()
-	err := db.First(&job, "ID=?", jobID).Error
-	fmt.Println(job)
+	sqlDB, err := db.DB()
+
 	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	response := db.First(&job, "ID=?", jobID)
+	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error get the job"}
 	}
+	if response.RowsAffected == 0 {
+		return Response{Code: http.StatusNotFound, Response: "Job not found"}
+	}
 	return Response{Code: http.StatusOK, Response: job}
+}
+
+func GetJobByClientID(clientID string) Response {
+	var job []database.Jobs
+	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	response := db.Model(&database.Jobs{}).Find(&job, "\"clientID\"=?", clientID)
+	if response.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error get the job"}
+	}
+	if response.RowsAffected == 0 {
+		return Response{Code: http.StatusNotFound, Response: "No Jobs Found"}
+	}
+	return Response{Code: http.StatusOK, Response: job}
+}
+
+func GetJobByTalentID(talentID string) Response {
+	var job []database.Jobs
+	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	response := db.Model(&database.Jobs{}).Find(&job, "\"talentID\"=?", talentID)
+	if response.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error get the job"}
+	}
+	if response.RowsAffected == 0 {
+		return Response{Code: http.StatusNotFound, Response: "No Jobs Found"}
+	}
+	return Response{
+		Code:     http.StatusOK,
+		Response: job,
+	}
 }
 
 func GetAllJobs() Response {
 	var job []database.Jobs
 
 	db := database.InitDB()
-	err := db.Find(&job).Error
+	sqlDB, err := db.DB()
+
 	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: "Error gett all jobs"}
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	response := db.Find(&job)
+	if response.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error get all jobs"}
+	}
+	if response.RowsAffected == 0 {
+		return Response{Code: http.StatusNotFound, Response: "Job not found"}
 	}
 	fmt.Println(job)
 	return Response{Code: http.StatusOK, Response: job}

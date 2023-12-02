@@ -51,6 +51,8 @@ func main() {
 	talentGroup.DELETE("/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, talent.DeleteHandler)
 
 	jobGroup.GET("/all", job.GetAllJobHandler)
+	jobGroup.GET("/client/:clientID", job.GetJobByClientIDHandler)
+	jobGroup.GET("/talent/:talentID", job.GetJobByTalentIDHandler)
 	jobGroup.POST("/create-job/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
 
@@ -59,5 +61,5 @@ func main() {
 	bidlistGroup.POST("/:create-bidlist/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.CreateBidListHandler)
 	bidlistGroup.DELETE("/:bidListID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.DeleteBidListHandler)
 
-	router.Run()
+	router.Run("127.0.0.1:8080")
 }

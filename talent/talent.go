@@ -15,6 +15,13 @@ import (
 func RegisterTalent(data *RegisterBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
@@ -50,10 +57,17 @@ func RegisterTalent(data *RegisterBody) Response {
 func LoginTalent(data *LoginBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
 	jwtKey := os.Getenv("JWT_KEY")
 	jwtByte := []byte(jwtKey)
 
-	err := db.First(&talent, "email=?", data.Email).Error
+	err = db.First(&talent, "email=?", data.Email).Error
 	if err != nil {
 		return Response{Code: http.StatusNotFound, Response: "Talent not found"}
 	}
@@ -93,7 +107,14 @@ func GetValueOrDefault(value string, defaultValue string) string {
 func GetTalentByID(talentID string) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	err := db.First(&talent, "ID=?", talentID).Error
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	err = db.First(&talent, "ID=?", talentID).Error
 	if err != nil {
 		return Response{
 			Code:     http.StatusNotFound,
@@ -110,7 +131,14 @@ func GetTalentByID(talentID string) Response {
 func GetTalents() Response {
 	var talents []database.Talent
 	db := database.InitDB()
-	err := db.Find(&talents).Error
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	err = db.Find(&talents).Error
 	if err != nil {
 		return Response{
 			Code:     http.StatusNotFound,
@@ -126,7 +154,14 @@ func GetTalents() Response {
 func EditTalentData(talentID string, data *EditTalentBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	err := db.First(&talent, "ID=?", talentID).Error
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	err = db.First(&talent, "ID=?", talentID).Error
 	if err != nil {
 		return Response{
 			Code:     http.StatusNotFound,
@@ -164,6 +199,13 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 		}
 	}
 	db := database.InitDB()
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
 	err = db.First(&talent, "ID=?", talentID).Error
 	if err != nil {
 		return Response{
@@ -203,7 +245,14 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 func DeleteTalentData(talentID string) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	err := db.First(&talent, "ID=?", talentID).Error
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
+	}
+
+	defer sqlDB.Close()
+	err = db.First(&talent, "ID=?", talentID).Error
 	if err != nil {
 		return Response{
 			Code:     http.StatusNotFound,
