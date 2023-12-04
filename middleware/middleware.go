@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -23,7 +24,9 @@ func AuthenticationMiddleware(c *gin.Context) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(jwtByte), nil
 	})
+	fmt.Println(token)
 	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Token Expired"})
 		c.Abort()
 		return
 	}
