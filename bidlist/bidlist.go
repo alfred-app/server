@@ -2,7 +2,6 @@ package bidlist
 
 import (
 	"alfred/database"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -12,13 +11,10 @@ import (
 func CreateBidList(data *CreateBidListBody, talentID string) Response {
 	var bidList database.BidList
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	parsedID, err := uuid.Parse(talentID)
 	if err != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error parsing talent ID"}
@@ -36,9 +32,9 @@ func CreateBidList(data *CreateBidListBody, talentID string) Response {
 		BidPlaced:  parsedBidPlaced,
 	}
 
-	err = db.Create(&bidList).Error
+	response := db.Create(&bidList)
 
-	if err != nil {
+	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error creating bid list"}
 	}
 	return Response{Code: http.StatusCreated, Response: bidList}
@@ -48,34 +44,26 @@ func GetAllBidList() Response {
 	var bidList []database.BidList
 
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.Find(&bidList).Error
-	if err != nil {
+
+	response := db.Find(&bidList)
+	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error getting all bid list"}
 	}
-	fmt.Println(bidList)
 	return Response{Code: http.StatusOK, Response: bidList}
 }
 
 func GetBidListByID(bidListID string) Response {
 	var bidList database.BidList
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.First(&bidList, "ID=?", bidListID).Error
-	fmt.Println(bidList)
-	if err != nil {
+
+	response := db.First(&bidList, "ID=?", bidListID)
+	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error getting bid list"}
 	}
 	return Response{Code: http.StatusOK, Response: bidList}
@@ -84,15 +72,12 @@ func GetBidListByID(bidListID string) Response {
 func DeleteBidList(bidListID string) Response {
 	var bidList database.BidList
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.Delete(&bidList, "ID=?", bidListID).Error
-	if err != nil {
+
+	response := db.Delete(&bidList, "ID=?", bidListID)
+	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error deleting bid list"}
 	}
 	return Response{Code: http.StatusOK, Response: "Bid list deleted"}

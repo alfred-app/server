@@ -2,7 +2,6 @@ package client
 
 import (
 	"alfred/database"
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -16,13 +15,10 @@ import (
 func RegisterClient(data *RegisterBody) Response {
 	var client database.Client
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
@@ -43,9 +39,9 @@ func RegisterClient(data *RegisterBody) Response {
 		Address:     data.Address,
 		ImageURL:    data.ImageURL,
 	}
-	err = db.Create(&client).Error
+	response := db.Create(&client)
 	client.Password = ""
-	if err != nil {
+	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error creating user"}
 	}
 	return Response{Code: http.StatusCreated, Response: client}
@@ -54,21 +50,18 @@ func RegisterClient(data *RegisterBody) Response {
 func LoginClient(data *LoginBody) Response {
 	var client database.Client
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	jwtKey := os.Getenv("JWT_KEY")
 	jwtByte := []byte(jwtKey)
 
-	err = db.First(&client, "email=?", data.Email).Error
-	if err != nil {
+	isExist := db.First(&client, "email=?", data.Email)
+	if isExist.Error != nil {
 		return Response{Code: http.StatusNotFound, Response: "Client not Found"}
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(client.Password), []byte(data.Password))
+	err := bcrypt.CompareHashAndPassword([]byte(client.Password), []byte(data.Password))
 	if err != nil {
 		return Response{Code: http.StatusUnauthorized, Response: "Password mismatch"}
 	}
@@ -97,16 +90,12 @@ func LoginClient(data *LoginBody) Response {
 func GetClientByID(clientID string) Response {
 	var client database.Client
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.Model(&database.Client{}).Preload("Jobs").Find(&client, "ID=?", clientID).Error
-	if err != nil {
-		fmt.Println(err)
+
+	response := db.Model(&database.Client{}).Preload("Jobs").Find(&client, "ID=?", clientID)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Client not found",
@@ -129,15 +118,12 @@ func GetValueOrDefault(value string, defaultValue string) string {
 func EditClientData(clientID string, data *EditClientBody) Response {
 	var client database.Client
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.First(&client, "ID=?", clientID).Error
-	if err != nil {
+
+	response := db.First(&client, "ID=?", clientID)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Client not found",
@@ -148,8 +134,8 @@ func EditClientData(clientID string, data *EditClientBody) Response {
 	client.Address = GetValueOrDefault(data.Address, client.Address)
 	client.PhoneNumber = GetValueOrDefault(data.PhoneNumber, client.PhoneNumber)
 	client.ImageURL = GetValueOrDefault(data.ImageURL, client.ImageURL)
-	err = db.Save(&client).Error
-	if err != nil {
+	edited := db.Save(&client)
+	if edited.Error != nil {
 		return Response{
 			Code:     http.StatusNotImplemented,
 			Response: "Failed to update data",
@@ -173,15 +159,12 @@ func ChangePassword(clientID string, data *ChangePasswordBody) Response {
 		}
 	}
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.First(&client, "ID=?", clientID).Error
-	if err != nil {
+
+	response := db.First(&client, "ID=?", clientID)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Client does not exist",
@@ -196,8 +179,8 @@ func ChangePassword(clientID string, data *ChangePasswordBody) Response {
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.NewPassword), salt)
 	client.Password = string(hashedPassword)
-	err = db.Save(&client).Error
-	if err != nil {
+	changed := db.Save(&client)
+	if changed.Error != nil {
 		return Response{
 			Code:     http.StatusInternalServerError,
 			Response: "Error update password",

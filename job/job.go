@@ -12,12 +12,7 @@ func CreateJob(data *CreateJobBody, clientID string) Response {
 	var job database.Jobs
 	db := database.InitDB()
 
-	sqlDB, err := db.DB()
-
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
 	parsedID, err := uuid.Parse(clientID)
@@ -55,13 +50,9 @@ func CreateJob(data *CreateJobBody, clientID string) Response {
 func GetJobByID(jobID string) Response {
 	var job database.Jobs
 	db := database.InitDB()
-	sqlDB, err := db.DB()
-
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	response := db.First(&job, "ID=?", jobID)
 	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error get the job"}
@@ -75,13 +66,10 @@ func GetJobByID(jobID string) Response {
 func GetJobByClientID(clientID string) Response {
 	var job []database.Jobs
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	response := db.Model(&database.Jobs{}).Find(&job, "\"clientID\"=?", clientID)
 	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error get the job"}
@@ -95,13 +83,10 @@ func GetJobByClientID(clientID string) Response {
 func GetJobByTalentID(talentID string) Response {
 	var job []database.Jobs
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	response := db.Model(&database.Jobs{}).Find(&job, "\"talentID\"=?", talentID)
 	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error get the job"}
@@ -119,13 +104,10 @@ func GetAllJobs() Response {
 	var job []database.Jobs
 
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	response := db.Find(&job)
 	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error get all jobs"}

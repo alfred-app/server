@@ -15,13 +15,10 @@ import (
 func RegisterTalent(data *RegisterBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
 	if err != nil {
@@ -46,9 +43,9 @@ func RegisterTalent(data *RegisterBody) Response {
 		Address:     data.Address,
 		PhoneNumber: data.PhoneNumber,
 	}
-	err = db.Create(&talent).Error
+	response := db.Create(&talent)
 	talent.Password = ""
-	if err != nil {
+	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error creating user"}
 	}
 	return Response{Code: http.StatusCreated, Response: talent}
@@ -57,21 +54,18 @@ func RegisterTalent(data *RegisterBody) Response {
 func LoginTalent(data *LoginBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	jwtKey := os.Getenv("JWT_KEY")
 	jwtByte := []byte(jwtKey)
 
-	err = db.First(&talent, "email=?", data.Email).Error
-	if err != nil {
+	iseExist := db.First(&talent, "email=?", data.Email)
+	if iseExist.Error != nil {
 		return Response{Code: http.StatusNotFound, Response: "Talent not found"}
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(talent.Password), []byte(data.Password))
+	err := bcrypt.CompareHashAndPassword([]byte(talent.Password), []byte(data.Password))
 	if err != nil {
 		return Response{Code: http.StatusUnauthorized, Response: "Password mismatch"}
 	}
@@ -107,15 +101,12 @@ func GetValueOrDefault(value string, defaultValue string) string {
 func GetTalentByID(talentID string) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.First(&talent, "ID=?", talentID).Error
-	if err != nil {
+
+	response := db.First(&talent, "ID=?", talentID)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Talent not found",
@@ -131,15 +122,12 @@ func GetTalentByID(talentID string) Response {
 func GetTalents() Response {
 	var talents []database.Talent
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.Find(&talents).Error
-	if err != nil {
+
+	response := db.Find(&talents)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Talents not found",
@@ -154,14 +142,11 @@ func GetTalents() Response {
 func EditTalentData(talentID string, data *EditTalentBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.First(&talent, "ID=?", talentID).Error
+
+	err := db.First(&talent, "ID=?", talentID).Error
 	if err != nil {
 		return Response{
 			Code:     http.StatusNotFound,
@@ -174,8 +159,8 @@ func EditTalentData(talentID string, data *EditTalentBody) Response {
 	talent.ImageURL = GetValueOrDefault(data.ImageURL, talent.ImageURL)
 	talent.Address = GetValueOrDefault(data.Address, talent.Address)
 	talent.PhoneNumber = GetValueOrDefault(data.PhoneNumber, talent.PhoneNumber)
-	err = db.Save(&talent).Error
-	if err != nil {
+	response := db.Save(&talent)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotImplemented,
 			Response: "Failed to update data",
@@ -199,13 +184,10 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 		}
 	}
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
 	err = db.First(&talent, "ID=?", talentID).Error
 	if err != nil {
 		return Response{
@@ -228,8 +210,8 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 		}
 	}
 	talent.Password = string(hashedPassword)
-	err = db.Save(&talent).Error
-	if err != nil {
+	response := db.Save(&talent)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotImplemented,
 			Response: "Failed to update password",
@@ -245,22 +227,19 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 func DeleteTalentData(talentID string) Response {
 	var talent database.Talent
 	db := database.InitDB()
-	sqlDB, err := db.DB()
 
-	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: err.Error()}
-	}
-
+	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
-	err = db.First(&talent, "ID=?", talentID).Error
+
+	err := db.First(&talent, "ID=?", talentID).Error
 	if err != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Talent not found",
 		}
 	}
-	err = db.Delete(&talent).Error
-	if err != nil {
+	response := db.Delete(&talent)
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotImplemented,
 			Response: "Failed to delete data",
