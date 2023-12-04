@@ -1,7 +1,6 @@
 package bidlist
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +26,6 @@ func GetAllBidListHandler(c *gin.Context) {
 func GetBidListByIDHandler(c *gin.Context) {
 	bidListID := c.Param("bidListID")
 	response := GetBidListByID(bidListID)
-	fmt.Println(bidListID)
 
 	c.JSON(response.Code, response.Response)
 }

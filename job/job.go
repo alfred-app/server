@@ -2,7 +2,6 @@ package job
 
 import (
 	"alfred/database"
-	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -39,7 +38,6 @@ func CreateJob(data *CreateJobBody, clientID string) Response {
 	}
 
 	err = db.Create(&job).Error
-	fmt.Println(job)
 
 	if err != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error creating job"}
@@ -115,6 +113,5 @@ func GetAllJobs() Response {
 	if response.RowsAffected == 0 {
 		return Response{Code: http.StatusNotFound, Response: "Job not found"}
 	}
-	fmt.Println(job)
 	return Response{Code: http.StatusOK, Response: job}
 }

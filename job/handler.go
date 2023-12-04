@@ -1,7 +1,6 @@
 package job
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +21,6 @@ func CreateJobHandler(c *gin.Context) {
 func GetJobByIDHandler(c *gin.Context) {
 	jobID := c.Param("jobID")
 	response := GetJobByID(jobID)
-	fmt.Println(jobID)
 
 	c.JSON(response.Code, response.Response)
 }
