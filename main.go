@@ -61,5 +61,5 @@ func main() {
 	bidlistGroup.POST("/:create-bidlist/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.CreateBidListHandler)
 	bidlistGroup.DELETE("/:bidListID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.DeleteBidListHandler)
 
-	router.Run("127.0.0.1:8080")
+	router.Run()
 }
