@@ -2,39 +2,48 @@ package bidlist
 
 import (
 	"alfred/database"
+	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 )
 
-func CreateBidList(data *CreateBidListBody, talentID string) Response {
+func CreateBidList(data *CreateBidListBody, jobID string) Response {
 	var bidList database.BidList
 	db := database.InitDB()
+
+	fmt.Println(data)
 
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	parsedID, err := uuid.Parse(talentID)
+	parsedTalentID, err := uuid.Parse(data.TalentID)
 	if err != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error parsing talent ID"}
 	}
 
-	parsedBidPlaced, err := time.Parse(time.RFC3339, data.BidPlaced)
+	parsedJobID, err := uuid.Parse(jobID)
 	if err != nil {
-		return Response{Code: http.StatusInternalServerError, Response: "Error parsing bid placed"}
+		return Response{Code: http.StatusInternalServerError, Response: "Error parsing job ID"}
+	}
+
+	newID, err := uuid.NewUUID()
+
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error generating new ID"}
 	}
 
 	bidList = database.BidList{
-		TalentID:   parsedID,
-		JobID:      parsedID,
+		ID:         newID,
+		TalentID:   parsedTalentID,
+		JobID:      parsedJobID,
 		PriceOnBid: data.PriceOnBid,
-		BidPlaced:  parsedBidPlaced,
 	}
 
 	response := db.Create(&bidList)
 
 	if response.Error != nil {
+		fmt.Println(response.Error.Error())
 		return Response{Code: http.StatusInternalServerError, Response: "Error creating bid list"}
 	}
 	return Response{Code: http.StatusCreated, Response: bidList}
@@ -81,4 +90,22 @@ func DeleteBidList(bidListID string) Response {
 		return Response{Code: http.StatusInternalServerError, Response: "Error deleting bid list"}
 	}
 	return Response{Code: http.StatusOK, Response: "Bid list deleted"}
+}
+
+func GetBidListByJobID(jobID string) Response {
+	var bidList []database.BidList
+
+	db := database.InitDB()
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	response := db.Find(&bidList, "\"jobID\"=?", jobID)
+
+	if response.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error getting bid list"}
+	}
+	if response.RowsAffected == 0 {
+		return Response{Code: http.StatusNotFound, Response: "No Bid List Found"}
+	}
+	return Response{Code: http.StatusOK, Response: bidList}
 }

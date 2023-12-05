@@ -9,12 +9,12 @@ import (
 func CreateBidListHandler(c *gin.Context) {
 	var requestBody CreateBidListBody
 
-	talentID := c.Param("userID")
+	jobID := c.Param("jobID")
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
-	response := CreateBidList(&requestBody, talentID)
+	response := CreateBidList(&requestBody, jobID)
 	c.JSON(response.Code, response.Response)
 }
 
@@ -33,5 +33,11 @@ func GetBidListByIDHandler(c *gin.Context) {
 func DeleteBidListHandler(c *gin.Context) {
 	bidListID := c.Param("bidListID")
 	response := DeleteBidList(bidListID)
+	c.JSON(response.Code, response.Response)
+}
+
+func GetBidListByJobIDHandler(c *gin.Context) {
+	jobID := c.Param("jobID")
+	response := GetBidListByJobID(jobID)
 	c.JSON(response.Code, response.Response)
 }

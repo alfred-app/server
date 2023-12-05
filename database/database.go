@@ -49,8 +49,8 @@ type Jobs struct {
 
 type BidList struct {
 	ID         uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	TalentID   uuid.UUID `gorm:"column:talentID" json:"talentID"`
-	JobID      uuid.UUID `gorm:"column:jobID" json:"jobID"`
+	TalentID   uuid.UUID `gorm:"column:talentID; references:ID" json:"talentID"`
+	JobID      uuid.UUID `gorm:"column:jobID; references:ID" json:"jobID"`
 	PriceOnBid int       `gorm:"column:priceOnBid" json:"priceOnBid"`
 	BidPlaced  time.Time `gorm:"column:bidPlaced;default:CURRENT_TIMESTAMP" json:"bidPlaced"`
 }
@@ -70,6 +70,10 @@ type Chat struct {
 	DateTime time.Time `gorm:"column:dateTime" json:"dateTime"`
 	SenderId string    `gorm:"column:senderId" json:"senderId"`
 	TargetId string    `gorm:"column:targetId" json:"targetId"`
+}
+
+func (BidList) TableName() string {
+	return "bid_list" // specify the actual table name here
 }
 
 func InitDB() *gorm.DB {

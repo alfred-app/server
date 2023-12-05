@@ -7,7 +7,6 @@ import (
 	"alfred/middleware"
 	"alfred/talent"
 
-	// "github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -56,9 +55,9 @@ func main() {
 	jobGroup.POST("/create-job/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
 
-	bidlistGroup.GET("/", middleware.AuthenticationMiddleware, bidlist.GetAllBidListHandler)
+	bidlistGroup.GET("/job/:jobID", middleware.AuthenticationMiddleware, bidlist.GetBidListByJobIDHandler)
 	bidlistGroup.GET("/:bidListID", middleware.AuthenticationMiddleware, bidlist.GetBidListByIDHandler)
-	bidlistGroup.POST("/:create-bidlist/:userID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.CreateBidListHandler)
+	bidlistGroup.POST("/create-bidlist/:jobID", middleware.AuthenticationMiddleware, middleware.TalentGuard, bidlist.CreateBidListHandler)
 	bidlistGroup.DELETE("/:bidListID", middleware.AuthenticationMiddleware, middleware.AuthorizationMiddleware, middleware.ClientGuard, bidlist.DeleteBidListHandler)
 
 	router.Run()

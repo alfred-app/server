@@ -1,3 +1,6 @@
+### BASE TEST
+GET http://localhost:8080
+
 ### REGISTER
 POST https://alfred-server.up.railway.app/client/register
 Content-Type: application/json
@@ -12,7 +15,7 @@ Content-Type: application/json
 }
 
 ### LOGIN
-POST http://localhost:8080/client/login
+POST https://alfred-server.up.railway.app/client/login
 Content-Type: application/json
 
 {
@@ -45,13 +48,13 @@ Content-Type: application/json
 }
 
 ### POST A JOB
-POST https://alfred-server.up.railway.app/job/create-job/c74b69fa-9032-11ee-897a-eec53a9db58b
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUxMjIzMH0.e7lLM0inXiCh9UDSW-5Afq-7AnbYTKMW6kaRIkWz-HQ
+POST https://alfred-server.up.railway.app/job/create-job/67e3d43a-9055-11ee-8214-da713a40a86b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTNkNDNhLTkwNTUtMTFlZS04MjE0LWRhNzEzYTQwYTg2YiIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJjbGllbnQiLCJleHAiOjE3MDE4ODIwNTR9.nKE_P8Zi5lrv-reK25_UOwwG4gIc_VM04USuYPA08qg
 Content-Type: application/json
 
 {
-    "name": "Bersih-bersih kebun kelas 1",
-    "descriptions": "Bersih-bersih kebun 20 hektar",
+    "name": "Mandiin kucing",
+    "descriptions": "Kucing saya belum mandi 1 tahun",
     "address": "Jl. Jalan-jalan no 54 Jakarta",
     "latitude": -7.1234,
     "longitude": 108.1234,
@@ -59,22 +62,49 @@ Content-Type: application/json
 }
 
 ### GET ALL JOBS
-GET https://alfred-server.up.railway.app/job/all
+GET http://localhost:8080/job/all
 
 ### GET JOBS BY CLIENTID
 GET http://localhost:8080/job/client/67e3d43a-9055-11ee-8214-da713a40a86b
 
 ### GET JOB DETAILS
-GET http://localhost:8080/job/3ccf72a5-9033-11ee-aa4c-00ff0d200ebe
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUyODM5MX0.0BqWDCCwEu-nN3wVhDiMdvCjXP_jc8BSlPUrX74iYSc
+GET http://localhost:8080/job/d71a6256-9058-11ee-8214-da713a40a86b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTNkNDNhLTkwNTUtMTFlZS04MjE0LWRhNzEzYTQwYTg2YiIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJjbGllbnQiLCJleHAiOjE3MDE4ODA5NTh9.lCYqDS0Yp1E2_hnMX6sEhP-qKFsUx2K6FEIcNWnJtsU\
 
-### POST A BID
-POST http://localhost:8080/bidlist/create-bidlist/
-Authorization: Bearer
+
+### POST A BID 
+POST http://localhost:8080/bidlist/create-bidlist/f347d14a-938f-11ee-896d-96b679c90059
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGE0NDkwLTkzOGUtMTFlZS04OTZkLTk2YjY3OWM5MDA1OSIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJ0YWxlbnQiLCJleHAiOjE3MDE4ODE0OTh9.LV9nzvE6zKTHdZMrBXTHz7Y2JbUWABT0T9Meef1phpI
 Content-Type: application/json
 
 {
-    "job_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
-    "bidder_id": "ebbaa178-a260-4da0-9020-bacc68faad96",
-    "priceOnBid": 100000,
+    "talentID": "620a4490-938e-11ee-896d-96b679c90059",
+    "priceOnBid": 100000
+}
+
+### GET BID BY JOB ID
+GET http://localhost:8080/bidlist/job/f347d14a-938f-11ee-896d-96b679c90059
+
+
+### REGISTER TALENT
+POST https://alfred-server.up.railway.app/talent/register
+Content-Type: application/json
+
+{
+    "email": "client1@example.com",
+    "name": "client1",
+    "password":"client1",
+    "phone_number":"123",
+    "address":"local",
+    "image_url":"images",
+    "aboutMe": "hello"
+}
+
+### LOGIN TALENT
+POST https://alfred-server.up.railway.app/talent/login
+Content-Type: application/json
+
+{
+    "email": "client1@example.com",
+    "password":"client1"
 }
