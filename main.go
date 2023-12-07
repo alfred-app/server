@@ -56,7 +56,7 @@ func main() {
 	jobGroup.GET("/all", job.GetAllJobHandler)
 	jobGroup.GET("/client/:clientID", middleware.AuthenticationMiddleware, job.GetJobByClientIDHandler)
 	jobGroup.GET("/talent/:talentID", middleware.AuthenticationMiddleware, job.GetJobByTalentIDHandler)
-	jobGroup.POST("/create-job", middleware.AuthenticationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
+	jobGroup.POST("/create-job/:userID", middleware.AuthenticationMiddleware, middleware.ClientGuard, job.CreateJobHandler)
 	jobGroup.GET("/:jobID", middleware.AuthenticationMiddleware, job.GetJobByIDHandler)
 	jobGroup.PATCH("/:jobID", middleware.AuthenticationMiddleware, job.EditJobByJobIDHandler)
 	jobGroup.POST("/set-talent", middleware.AuthenticationMiddleware, job.SetTalentHandler)
