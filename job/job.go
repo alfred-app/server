@@ -190,7 +190,7 @@ func SetTalent(c *gin.Context, data SetTalentBody) Response {
 		return Response{Code: http.StatusInternalServerError, Response: "Error parsing talent ID"}
 	}
 
-	job.TalentID = parsedTalentID
+	job.TalentID = (*uuid.UUID)(parsedTalentID.NodeID())
 	job.FixedPrice = data.FixedPrice
 	edited := db.Save(&job)
 	if edited.Error != nil {
