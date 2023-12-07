@@ -2,6 +2,7 @@ package main
 
 import (
 	"alfred/bidlist"
+	"alfred/chat"
 	"alfred/client"
 	"alfred/job"
 	"alfred/middleware"
@@ -33,6 +34,7 @@ func main() {
 	jobGroup := router.Group("/job")
 	bidlistGroup := router.Group("/bidlist")
 	notificationGroup := router.Group("/notification")
+	chatGroup := router.Group("/chat")
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Hello, world!")
@@ -65,6 +67,8 @@ func main() {
 	bidlistGroup.DELETE("/:bidListID", middleware.AuthenticationMiddleware, middleware.TalentGuard, bidlist.DeleteBidListHandler)
 
 	notificationGroup.GET("/:userId", middleware.AuthenticationMiddleware, notification.GetAllNotificationHandler)
+
+	chatGroup.GET("/:userId/:targetId", chat.GetAllChatHandler)
 
 	router.Run()
 }

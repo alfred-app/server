@@ -15,21 +15,21 @@ Content-Type: application/json
 }
 
 ### LOGIN
-POST https://alfred-server.up.railway.app/client/login
+POST http://localhost:8080/client/login
 Content-Type: application/json
 
 {
-    "email": "client1@example.com",
-    "password": "client1"
+    "email": "client@example.com",
+    "password": "client"
 }
 
 ### GET CLIENT BY ID
 GET https://alfred-server.up.railway.app/client/c74b69fa-9032-11ee-897a-eec53a9db58b
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTUxMjIzMH0.e7lLM0inXiCh9UDSW-5Afq-7AnbYTKMW6kaRIkWz-HQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMjA0NzAyNX0.LhQAmLGIzJT8o4S7tFD69fKmMh0AeiN_Zz15Fqi1JGU
 
 ### UPDATE CLIENT DATA
-PATCH http://localhost:8080/client/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
+PATCH http://localhost:8080/client/c74b69fa-9032-11ee-897a-eec53a9db58b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMjA0NzAyNX0.LhQAmLGIzJT8o4S7tFD69fKmMh0AeiN_Zz15Fqi1JGU
 Content-Type: application/json
 
 {
@@ -38,13 +38,13 @@ Content-Type: application/json
 }
 
 ### CHANGE PASSWORD
-PATCH http://localhost:8080/client/change-password/ebbaa178-a260-4da0-9020-bacc68faad96
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYmFhMTc4LWEyNjAtNGRhMC05MDIwLWJhY2M2OGZhYWQ5NiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMTA2MTUyNn0.SA3S3dFFgBA1Llv3njkgumzSG9V_obrA-WK00i21F1U
+PATCH http://localhost:8080/client/change-password/c74b69fa-9032-11ee-897a-eec53a9db58b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMjA0NjAzOH0.tzzygfFNdb3TUM71K2ZRJnTPm7ryNg_hbReZaV5yZyg
 Content-Type: application/json
 
 {
-    "old_password":"client",
-    "new_password":"clientNewPassword"
+    "old_password":"clientNewPassword",
+    "new_password":"client"
 }
 
 ### POST A JOB
@@ -68,8 +68,8 @@ GET http://localhost:8080/job/all
 GET http://localhost:8080/job/client/67e3d43a-9055-11ee-8214-da713a40a86b
 
 ### GET JOB DETAILS
-GET http://localhost:8080/job/d71a6256-9058-11ee-8214-da713a40a86b
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTNkNDNhLTkwNTUtMTFlZS04MjE0LWRhNzEzYTQwYTg2YiIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJjbGllbnQiLCJleHAiOjE3MDE4ODA5NTh9.lCYqDS0Yp1E2_hnMX6sEhP-qKFsUx2K6FEIcNWnJtsU\
+GET http://localhost:8080/job/3ccf72a5-9033-11ee-aa4c-00ff0d200ebe
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTNkNDNhLTkwNTUtMTFlZS04MjE0LWRhNzEzYTQwYTg2YiIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJjbGllbnQiLCJleHAiOjE3MDIwNDM3NjB9.RmN_JDT4UNHxjUBUFdc6xfKOJvUEWHmq9t4uUQv-sSA
 
 
 ### POST A BID 
@@ -108,3 +108,28 @@ Content-Type: application/json
     "email": "client1@example.com",
     "password":"client1"
 }
+
+### EDIT JOB DATA
+PATCH http://localhost:8080/job/3ccf72a5-9033-11ee-aa4c-00ff0d200ebe
+Content-Type: application/json
+
+{
+    "descriptions": "Halo Halo"
+}
+
+### SET TALENT
+POST http://localhost:8080/job/set-talent
+Content-Type: application/json
+
+{
+    "jobID": "3ccf72a5-9033-11ee-aa4c-00ff0d200ebe",
+    "talentID": "620a4490-938e-11ee-896d-96b679c90059",
+    "fixedPrice": 20000
+}
+
+### GET NOTIFICATIONS
+GET http://localhost:8080/notification/c74b69fa-9032-11ee-897a-eec53a9db58b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM3NGI2OWZhLTkwMzItMTFlZS04OTdhLWVlYzUzYTlkYjU4YiIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIiwicm9sZSI6ImNsaWVudCIsImV4cCI6MTcwMjA0ODIzOH0.7-XWkNvP_vhCBdQwR2u_Q7iGfhH8ZN1yFoPCpwGxoo8
+
+### GET ALL CHAT
+GET http://localhost:8080/chat/12928164-9042-11ee-897a-eec53a9db58b/c74b69fa-9032-11ee-897a-eec53a9db58b
