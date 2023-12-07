@@ -2,11 +2,13 @@ package client
 
 import (
 	"alfred/database"
+	"alfred/middleware"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -115,7 +117,7 @@ func GetValueOrDefault(value string, defaultValue string) string {
 	return defaultValue
 }
 
-func EditClientData(clientID string, data *EditClientBody) Response {
+func EditClientData(c *gin.Context, clientID string, data *EditClientBody) Response {
 	var client database.Client
 	db := database.InitDB()
 
@@ -123,6 +125,7 @@ func EditClientData(clientID string, data *EditClientBody) Response {
 	defer sqlDB.Close()
 
 	response := db.First(&client, "ID=?", clientID)
+	middleware.AuthorizationMiddleware(c, client.ID.String())
 	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
@@ -148,7 +151,7 @@ func EditClientData(clientID string, data *EditClientBody) Response {
 	}
 }
 
-func ChangePassword(clientID string, data *ChangePasswordBody) Response {
+func ChangePassword(c *gin.Context, clientID string, data *ChangePasswordBody) Response {
 	var client database.Client
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
@@ -164,6 +167,8 @@ func ChangePassword(clientID string, data *ChangePasswordBody) Response {
 	defer sqlDB.Close()
 
 	response := db.First(&client, "ID=?", clientID)
+	middleware.AuthorizationMiddleware(c, client.ID.String())
+
 	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,

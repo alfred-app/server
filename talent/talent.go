@@ -2,11 +2,13 @@ package talent
 
 import (
 	"alfred/database"
+	"alfred/middleware"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -139,15 +141,16 @@ func GetTalents() Response {
 	}
 }
 
-func EditTalentData(talentID string, data *EditTalentBody) Response {
+func EditTalentData(c *gin.Context, talentID string, data *EditTalentBody) Response {
 	var talent database.Talent
 	db := database.InitDB()
 
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	err := db.First(&talent, "ID=?", talentID).Error
-	if err != nil {
+	response := db.First(&talent, "ID=?", talentID)
+	middleware.AuthorizationMiddleware(c, talent.ID.String())
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Talent not found",
@@ -159,8 +162,8 @@ func EditTalentData(talentID string, data *EditTalentBody) Response {
 	talent.ImageURL = GetValueOrDefault(data.ImageURL, talent.ImageURL)
 	talent.Address = GetValueOrDefault(data.Address, talent.Address)
 	talent.PhoneNumber = GetValueOrDefault(data.PhoneNumber, talent.PhoneNumber)
-	response := db.Save(&talent)
-	if response.Error != nil {
+	edited := db.Save(&talent)
+	if edited.Error != nil {
 		return Response{
 			Code:     http.StatusNotImplemented,
 			Response: "Failed to update data",
@@ -173,7 +176,7 @@ func EditTalentData(talentID string, data *EditTalentBody) Response {
 	}
 }
 
-func ChangePassword(talentID string, data *ChangePasswordBody) Response {
+func ChangePassword(c *gin.Context, talentID string, data *ChangePasswordBody) Response {
 	var talent database.Talent
 	saltStr := os.Getenv("HASH_SALT")
 	salt, err := strconv.Atoi(saltStr)
@@ -188,8 +191,9 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	err = db.First(&talent, "ID=?", talentID).Error
-	if err != nil {
+	response := db.First(&talent, "ID=?", talentID)
+	middleware.AuthorizationMiddleware(c, talent.ID.String())
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Talent does not exist",
@@ -210,8 +214,8 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 		}
 	}
 	talent.Password = string(hashedPassword)
-	response := db.Save(&talent)
-	if response.Error != nil {
+	edited := db.Save(&talent)
+	if edited.Error != nil {
 		return Response{
 			Code:     http.StatusNotImplemented,
 			Response: "Failed to update password",
@@ -224,22 +228,23 @@ func ChangePassword(talentID string, data *ChangePasswordBody) Response {
 	}
 }
 
-func DeleteTalentData(talentID string) Response {
+func DeleteTalentData(c *gin.Context, talentID string) Response {
 	var talent database.Talent
 	db := database.InitDB()
 
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
-	err := db.First(&talent, "ID=?", talentID).Error
-	if err != nil {
+	response := db.First(&talent, "ID=?", talentID)
+	middleware.AuthorizationMiddleware(c, talent.ID.String())
+	if response.Error != nil {
 		return Response{
 			Code:     http.StatusNotFound,
 			Response: "Talent not found",
 		}
 	}
-	response := db.Delete(&talent)
-	if response.Error != nil {
+	deleted := db.Delete(&talent)
+	if deleted.Error != nil {
 		return Response{
 			Code:     http.StatusNotImplemented,
 			Response: "Failed to delete data",

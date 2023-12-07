@@ -73,18 +73,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTNkNDNhL
 
 
 ### POST A BID 
-POST http://localhost:8080/bidlist/create-bidlist/f347d14a-938f-11ee-896d-96b679c90059
+POST https://alfred-server.up.railway.app/bidlist/create/f347d14a-938f-11ee-896d-96b679c90059
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGE0NDkwLTkzOGUtMTFlZS04OTZkLTk2YjY3OWM5MDA1OSIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJ0YWxlbnQiLCJleHAiOjE3MDE4ODE0OTh9.LV9nzvE6zKTHdZMrBXTHz7Y2JbUWABT0T9Meef1phpI
 Content-Type: application/json
 
 {
     "talentID": "620a4490-938e-11ee-896d-96b679c90059",
-    "priceOnBid": 100000
+    "priceOnBid": 200000
 }
 
 ### GET BID BY JOB ID
 GET http://localhost:8080/bidlist/job/f347d14a-938f-11ee-896d-96b679c90059
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGE0NDkwLTkzOGUtMTFlZS04OTZkLTk2YjY3OWM5MDA1OSIsImVtYWlsIjoiY2xpZW50MUBleGFtcGxlLmNvbSIsInJvbGUiOiJ0YWxlbnQiLCJleHAiOjE3MDE4ODE0OTh9.LV9nzvE6zKTHdZMrBXTHz7Y2JbUWABT0T9Meef1phpI
 
 ### REGISTER TALENT
 POST https://alfred-server.up.railway.app/talent/register

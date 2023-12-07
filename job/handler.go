@@ -41,3 +41,22 @@ func GetJobByClientIDHandler(c *gin.Context) {
 	response := GetJobByClientID(clientID)
 	c.JSON(response.Code, response.Response)
 }
+
+func EditJobByJobIDHandler(c *gin.Context) {
+	var requestBody EditJobBody
+	jobID := c.Param("jobID")
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	}
+	response := EditJobById(c, jobID, requestBody)
+	c.JSON(response.Code, response.Response)
+}
+
+func SetTalentHandler(c *gin.Context) {
+	var requestBody SetTalentBody
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	}
+	response := SetTalent(c, requestBody)
+	c.JSON(response.Code, response.Response)
+}

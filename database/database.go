@@ -34,17 +34,17 @@ type Talent struct {
 }
 
 type Jobs struct {
-	ID           uuid.UUID  `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	ClientID     uuid.UUID  `gorm:"column:clientID" json:"clientID"`
-	TalentID     *uuid.UUID `gorm:"column:talentID; default:null; references:ID" json:"talentID"`
-	Name         string     `gorm:"column:name" json:"name"`
-	Descriptions string     `gorm:"column:descriptions" json:"descriptions"`
-	FixedPrice   int        `gorm:"column:fixedPrice; default:null" json:"fixedPrice"`
-	Address      string     `gorm:"column:address" json:"address"`
-	Latitude     float64    `gorm:"column:latitude" json:"latitude"`
-	Longitude    float64    `gorm:"column:longitude" json:"longitude"`
-	ImageURL     string     `gorm:"column:imageURL" json:"imageURL"`
-	BidList      []BidList  `gorm:"foreignKey:JobID; references:ID" json:"bidList"`
+	ID           uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	ClientID     uuid.UUID `gorm:"column:clientID" json:"clientID"`
+	TalentID     uuid.UUID `gorm:"column:talentID; default:null; references:ID" json:"talentID"`
+	Name         string    `gorm:"column:name" json:"name"`
+	Descriptions string    `gorm:"column:descriptions" json:"descriptions"`
+	FixedPrice   int       `gorm:"column:fixedPrice; default:null" json:"fixedPrice"`
+	Address      string    `gorm:"column:address" json:"address"`
+	Latitude     float64   `gorm:"column:latitude" json:"latitude"`
+	Longitude    float64   `gorm:"column:longitude" json:"longitude"`
+	ImageURL     string    `gorm:"column:imageURL" json:"imageURL"`
+	BidList      []BidList `gorm:"foreignKey:JobID; references:ID" json:"bidList"`
 }
 
 type BidList struct {

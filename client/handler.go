@@ -41,7 +41,7 @@ func UpdateHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
-	response := EditClientData(clientID, &requestBody)
+	response := EditClientData(c, clientID, &requestBody)
 	c.JSON(response.Code, response.Response)
 }
 
@@ -52,6 +52,6 @@ func ChangePasswordHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
-	response := ChangePassword(clientID, &requestBody)
+	response := ChangePassword(c, clientID, &requestBody)
 	c.JSON(response.Code, response.Response)
 }

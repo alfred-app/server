@@ -33,12 +33,10 @@ func AuthenticationMiddleware(c *gin.Context) {
 	c.Next()
 }
 
-func AuthorizationMiddleware(c *gin.Context) {
+func AuthorizationMiddleware(c *gin.Context, clientID string) {
 	data, isExist := c.Get("token")
-	clientID := c.Param("userID")
+	// clientID := c.Param("userID")
 	if !isExist {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "Token data not found"})
-		c.Abort()
 		return
 	}
 	claims, ok := data.(jwt.MapClaims)
