@@ -5,6 +5,7 @@ import (
 	"alfred/client"
 	"alfred/job"
 	"alfred/middleware"
+	"alfred/notification"
 	"alfred/talent"
 
 	"github.com/gin-gonic/gin"
@@ -31,6 +32,7 @@ func main() {
 	talentGroup := router.Group("/talent")
 	jobGroup := router.Group("/job")
 	bidlistGroup := router.Group("/bidlist")
+	notificationGroup := router.Group("/notification")
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Hello, world!")
@@ -61,6 +63,8 @@ func main() {
 	bidlistGroup.GET("/:bidListID", middleware.AuthenticationMiddleware, bidlist.GetBidListByIDHandler)
 	bidlistGroup.POST("/create/:jobID", middleware.AuthenticationMiddleware, middleware.TalentGuard, bidlist.CreateBidListHandler)
 	bidlistGroup.DELETE("/:bidListID", middleware.AuthenticationMiddleware, middleware.TalentGuard, bidlist.DeleteBidListHandler)
+
+	notificationGroup.GET("/:userId", middleware.AuthenticationMiddleware, notification.GetAllNotificationHandler)
 
 	router.Run()
 }
