@@ -2,8 +2,10 @@ package job
 
 import (
 	"alfred/database"
+	"alfred/middleware"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
@@ -112,6 +114,90 @@ func GetAllJobs() Response {
 	}
 	if response.RowsAffected == 0 {
 		return Response{Code: http.StatusNotFound, Response: "Job not found"}
+	}
+	return Response{Code: http.StatusOK, Response: job}
+}
+
+func GetValueOrDefault(value interface{}, defaultValue interface{}) interface{} {
+	switch value.(type) {
+	case string:
+		if value != "" {
+			return value
+		}
+	case float64:
+		if value != 0.0 || value != nil {
+			return value
+		}
+	}
+	return defaultValue
+}
+
+func EditJobById(c *gin.Context, jobID string, data EditJobBody) Response {
+	var job database.Jobs
+
+	db := database.InitDB()
+
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	response := db.First(&job, "ID=?", jobID)
+	middleware.AuthorizationMiddleware(c, job.ClientID.String())
+	if response.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error get job"}
+	}
+	if response.RowsAffected == 0 {
+		return Response{Code: http.StatusNotFound, Response: "Job not found"}
+	}
+
+	job.Name = GetValueOrDefault(data.Name, job.Name).(string)
+	job.Descriptions = GetValueOrDefault(data.Descriptions, job.Descriptions).(string)
+	job.Address = GetValueOrDefault(data.Address, job.Address).(string)
+	job.Latitude = GetValueOrDefault(data.Latitude, job.Latitude).(float64)
+	job.Longitude = GetValueOrDefault(data.Longitude, job.Longitude).(float64)
+	job.ImageURL = GetValueOrDefault(data.ImageURL, job.ImageURL).(string)
+	edited := db.Save(&job)
+	if edited.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: edited.Error.Error()}
+	}
+	if edited.RowsAffected == 0 {
+		return Response{Code: http.StatusBadRequest, Response: "Error Update data"}
+	}
+	return Response{
+		Code:     http.StatusOK,
+		Response: job,
+	}
+}
+
+func SetTalent(c *gin.Context, data SetTalentBody) Response {
+	var job database.Jobs
+
+	db := database.InitDB()
+
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
+	response := db.First(&job, "ID=?", data.JobID)
+	middleware.AuthorizationMiddleware(c, job.ClientID.String())
+	if response.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error get job data"}
+	}
+	if response.RowsAffected == 0 {
+		return Response{Code: http.StatusNotFound, Response: "Job not found"}
+	}
+
+	parsedTalentID, err := uuid.Parse(data.TalentID)
+	if err != nil {
+		return Response{Code: http.StatusInternalServerError, Response: "Error parsing talent ID"}
+	}
+
+	job.TalentID = parsedTalentID
+	job.FixedPrice = data.FixedPrice
+	edited := db.Save(&job)
+	if edited.Error != nil {
+		return Response{Code: http.StatusInternalServerError, Response: edited.Error.Error()}
+	}
+	if edited.RowsAffected == 0 {
+		return Response{Code: http.StatusBadRequest, Response: "Error Edit job data"}
 	}
 	return Response{Code: http.StatusOK, Response: job}
 }

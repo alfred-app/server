@@ -32,7 +32,7 @@ func GetBidListByIDHandler(c *gin.Context) {
 
 func DeleteBidListHandler(c *gin.Context) {
 	bidListID := c.Param("bidListID")
-	response := DeleteBidList(bidListID)
+	response := DeleteBidList(c, bidListID)
 	c.JSON(response.Code, response.Response)
 }
 

@@ -2,9 +2,11 @@ package bidlist
 
 import (
 	"alfred/database"
+	"alfred/middleware"
 	"fmt"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
@@ -78,7 +80,7 @@ func GetBidListByID(bidListID string) Response {
 	return Response{Code: http.StatusOK, Response: bidList}
 }
 
-func DeleteBidList(bidListID string) Response {
+func DeleteBidList(c *gin.Context, bidListID string) Response {
 	var bidList database.BidList
 	db := database.InitDB()
 
@@ -86,6 +88,7 @@ func DeleteBidList(bidListID string) Response {
 	defer sqlDB.Close()
 
 	response := db.Delete(&bidList, "ID=?", bidListID)
+	middleware.AuthorizationMiddleware(c, bidList.TalentID.String())
 	if response.Error != nil {
 		return Response{Code: http.StatusInternalServerError, Response: "Error deleting bid list"}
 	}
