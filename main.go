@@ -14,7 +14,7 @@ import (
 
 func CORS(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT")
+	c.Header("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, PATCH")
 	c.Header("Access-Control-Allow-Headers", "Authorization, Content-Type")
 	c.Header("Access-Control-Allow-Credentials", "true")
 

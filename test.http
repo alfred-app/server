@@ -19,8 +19,8 @@ POST http://localhost:8080/client/login
 Content-Type: application/json
 
 {
-    "email": "client@example.com",
-    "password": "client"
+    "email": "client2@example.com",
+    "password": "client2NewPassword"
 }
 
 ### GET CLIENT BY ID
@@ -110,8 +110,9 @@ Content-Type: application/json
 }
 
 ### EDIT JOB DATA
-PATCH http://localhost:8080/job/3ccf72a5-9033-11ee-aa4c-00ff0d200ebe
+PATCH http://localhost:8080/job/e1784241-9518-11ee-bcf7-bac086ed3a71
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJmOTRmN2EyLTk1MTYtMTFlZS1iMjE3LWU2OGNiNmU1OTdkNiIsImVtYWlsIjoiY2xpZW50MkBleGFtcGxlLmNvbSIsInJvbGUiOiJjbGllbnQiLCJleHAiOjE3MDIwNTEyMzF9.68h-MW0c6kZ-ijx8uJJukR7n6NwEq382tL0NxvMIor0
 
 {
     "descriptions": "Halo Halo"
@@ -120,9 +121,10 @@ Content-Type: application/json
 ### SET TALENT
 POST http://localhost:8080/job/set-talent
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJmOTRmN2EyLTk1MTYtMTFlZS1iMjE3LWU2OGNiNmU1OTdkNiIsImVtYWlsIjoiY2xpZW50MkBleGFtcGxlLmNvbSIsInJvbGUiOiJjbGllbnQiLCJleHAiOjE3MDIwNDk3MzZ9.4ytqDDB7CEN3wKWgh70alhjY11uhl4mf7oHfmKI6pBQ
 
 {
-    "jobID": "3ccf72a5-9033-11ee-aa4c-00ff0d200ebe",
+    "jobID": "e1784241-9518-11ee-bcf7-bac086ed3a71",
     "talentID": "620a4490-938e-11ee-896d-96b679c90059",
     "fixedPrice": 20000
 }
